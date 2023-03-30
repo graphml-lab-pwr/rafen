@@ -1,0 +1,27 @@
+cls: dynalign.embeddings.gnn_ae.GAEWeightedAlignedEmbeddingL2
+
+selector:
+  cls: dynalign.aligners.selectors.TemporalCentralityMeasureSelector
+  method: percent
+  cache: data/prev/cached/temporal_scores/betweenness/
+  args:
+    fb-forum:
+      percent: 1.0
+      log_norm_scores: True
+    fb-messages:
+      percent: 1.0
+      log_norm_scores: True
+    bitcoin-otc:
+      percent: 1.0
+      log_norm_scores: True
+    bitcoin-alpha:
+      percent: 1.0
+      log_norm_scores: True
+    ppi:
+      percent: 1.0
+      log_norm_scores: True
+    ogbl-collab:
+      percent: 1.0
+      log_norm_scores: True
+
+pretrained: data/embeddings/GAE/

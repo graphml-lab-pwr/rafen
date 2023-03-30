@@ -1,0 +1,22 @@
+cls: rafen.models.gae.GAEEmbedding
+
+alpha_step: 0.05
+
+selector:
+  cls: dynalign.aligners.selectors.FILDNEPercentAligner
+  method: percent
+  args:
+    fb-forum:
+      percent: 1.0
+    fb-messages:
+      percent: 1.0
+    bitcoin-otc:
+      percent: 1.0
+    bitcoin-alpha:
+      percent: 1.0
+    ppi:
+      percent: 1.0
+    ogbl-collab:
+      percent: 1.0
+
+pretrained: data/embeddings/GAE/

@@ -1,0 +1,8 @@
+runs: 25
+
+paths:
+  graphs_dir: data/graphs/
+  tg_graphs_dir: data/tg_graphs/
+  output_dir: data/embeddings/
+  aligners_cfg_dir: experiments/configs/aligners/
+  n2v_cfg: experiments/configs/models/Node2Vec.yaml

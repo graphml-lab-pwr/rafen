@@ -1,0 +1,63 @@
+paths:
+  input: 'data/raw/real/${dataset}.gpkl'
+  output: 'data/graphs/${dataset}.pkl'
+
+graphs:
+  bitcoin-alpha:
+    split_type: 'year'
+    interval: 1
+    merge:
+      - [0, 1]
+      - [5, 6]
+    timestamp_format_year: False
+  bitcoin-otc:
+    split_type: 'year'
+    interval: 1
+    merge:
+      - [0, 1]
+      - [5, 6]
+    timestamp_format_year: False
+  fb-forum:
+    split_type: 'month'
+    interval: 1
+    timestamp_format_year: False
+  fb-messages:
+    split_type: 'month'
+    interval: 1
+    merge:
+      - [0, 1]
+    timestamp_format_year: False
+  ia-hypertext:
+    split_type: 'day'
+    interval: 1
+    timestamp_format_year: False
+  ia-enron-employees:
+    split_type: 'month'
+    interval: 6
+    merge:
+      - [5, 6]
+    timestamp_format_year: False
+  ia-radoslaw-email:
+    split_type: 'month'
+    interval: 1
+    merge:
+      - [8, 9]
+    timestamp_format_year: False
+  ppi:
+    split_type: 'year'
+    interval: 5
+    exclude:
+      - 0
+      - 1
+      - 2
+      - 3
+    timestamp_format_year: True
+  ogbl-collab:
+    split_type: 'year'
+    interval: 5
+    exclude:
+      - 0
+      - 1
+      - 2
+      - 3
+    timestamp_format_year: True

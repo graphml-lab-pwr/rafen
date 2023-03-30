@@ -1,0 +1,5131 @@
+schema: '2.0'
+stages:
+  split_graphs@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/split_graphs.py --dataset bitcoin-alpha
+    deps:
+    - path: data/raw/real/bitcoin-alpha.gpkl
+      md5: a3e4aaac58db0856d73b3bf51d5b5b32
+      size: 1039937
+    - path: experiments/scripts/split_graphs.py
+      md5: 5a6743274ba3dcf755d1f255c4cdbd4f
+      size: 2205
+    params:
+      experiments/configs/split_graphs.yaml:
+        graphs.bitcoin-alpha:
+          split_type: year
+          interval: 1
+          merge:
+          - - 0
+            - 1
+          - - 5
+            - 6
+          timestamp_format_year: false
+        paths:
+          input: data/raw/real/${dataset}.gpkl
+          output: data/graphs/${dataset}.pkl
+    outs:
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+  split_graphs@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/split_graphs.py --dataset bitcoin-otc
+    deps:
+    - path: data/raw/real/bitcoin-otc.gpkl
+      md5: e8a2a6a0d3dda127c109a0f707d857fc
+      size: 1567592
+    - path: experiments/scripts/split_graphs.py
+      md5: 5a6743274ba3dcf755d1f255c4cdbd4f
+      size: 2205
+    params:
+      experiments/configs/split_graphs.yaml:
+        graphs.bitcoin-otc:
+          split_type: year
+          interval: 1
+          merge:
+          - - 0
+            - 1
+          - - 5
+            - 6
+          timestamp_format_year: false
+        paths:
+          input: data/raw/real/${dataset}.gpkl
+          output: data/graphs/${dataset}.pkl
+    outs:
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+  split_graphs@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/split_graphs.py --dataset fb-forum
+    deps:
+    - path: data/raw/real/fb-forum.gpkl
+      md5: b8135056384e2fa5ea065bcf2d5ae070
+      size: 749771
+    - path: experiments/scripts/split_graphs.py
+      md5: 5a6743274ba3dcf755d1f255c4cdbd4f
+      size: 2205
+    params:
+      experiments/configs/split_graphs.yaml:
+        graphs.fb-forum:
+          split_type: month
+          interval: 1
+          timestamp_format_year: false
+        paths:
+          input: data/raw/real/${dataset}.gpkl
+          output: data/graphs/${dataset}.pkl
+    outs:
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+  split_graphs@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/split_graphs.py --dataset fb-messages
+    deps:
+    - path: data/raw/real/fb-messages.gpkl
+      md5: 6762a5eb7e2084ef4dca133d57df04cb
+      size: 1404270
+    - path: experiments/scripts/split_graphs.py
+      md5: 5a6743274ba3dcf755d1f255c4cdbd4f
+      size: 2205
+    params:
+      experiments/configs/split_graphs.yaml:
+        graphs.fb-messages:
+          split_type: month
+          interval: 1
+          merge:
+          - - 0
+            - 1
+          timestamp_format_year: false
+        paths:
+          input: data/raw/real/${dataset}.gpkl
+          output: data/graphs/${dataset}.pkl
+    outs:
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+  split_graphs@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/split_graphs.py --dataset ppi
+    deps:
+    - path: data/raw/real/ppi.gpkl
+      md5: 8f508259a564942faa689b5b0c26ec2b
+      size: 5562886
+    - path: experiments/scripts/split_graphs.py
+      md5: 5a6743274ba3dcf755d1f255c4cdbd4f
+      size: 2205
+    params:
+      experiments/configs/split_graphs.yaml:
+        graphs.ppi:
+          split_type: year
+          interval: 5
+          exclude:
+          - 0
+          - 1
+          - 2
+          - 3
+          timestamp_format_year: true
+        paths:
+          input: data/raw/real/${dataset}.gpkl
+          output: data/graphs/${dataset}.pkl
+    outs:
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+  split_graphs@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/split_graphs.py --dataset ogbl-collab
+    deps:
+    - path: data/raw/real/ogbl-collab.gpkl
+      md5: 90a1313fb30f05f608fafd273fcf83dd
+      size: 44740015
+    - path: experiments/scripts/split_graphs.py
+      md5: 5a6743274ba3dcf755d1f255c4cdbd4f
+      size: 2205
+    params:
+      experiments/configs/split_graphs.yaml:
+        graphs.ogbl-collab:
+          split_type: year
+          interval: 5
+          exclude:
+          - 0
+          - 1
+          - 2
+          - 3
+          timestamp_format_year: true
+        paths:
+          input: data/raw/real/${dataset}.gpkl
+          output: data/graphs/${dataset}.pkl
+    outs:
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+  convert_nx_graphs_to_tg_data@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset bitcoin-alpha
+    deps:
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    outs:
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+  convert_nx_graphs_to_tg_data@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset bitcoin-otc
+    deps:
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    outs:
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+  convert_nx_graphs_to_tg_data@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset fb-forum
+    deps:
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    outs:
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+  convert_nx_graphs_to_tg_data@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset fb-messages
+    deps:
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    outs:
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+  convert_nx_graphs_to_tg_data@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset ppi
+    deps:
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    outs:
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+  convert_nx_graphs_to_tg_data@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset ogbl-collab
+    deps:
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    outs:
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+  generate_link_prediction_datasets@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/generate_lp_datasets.py --dataset
+      bitcoin-alpha --split-proportion 0.6 0.2 0.2
+    deps:
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    outs:
+    - path: data/lp_datasets/bitcoin-alpha.pkl
+      md5: ac0976259402507f29a9fbd49a794d26
+      size: 653731
+  generate_link_prediction_datasets@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/generate_lp_datasets.py --dataset
+      bitcoin-otc --split-proportion 0.6 0.2 0.2
+    deps:
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    outs:
+    - path: data/lp_datasets/bitcoin-otc.pkl
+      md5: 4a1d9988777f670708dc397a34eb740a
+      size: 737881
+  generate_link_prediction_datasets@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/generate_lp_datasets.py --dataset
+      fb-forum --split-proportion 0.6 0.2 0.2
+    deps:
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    outs:
+    - path: data/lp_datasets/fb-forum.pkl
+      md5: 77ca39d60135119077ab12395a6fbb06
+      size: 1595172
+  generate_link_prediction_datasets@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/generate_lp_datasets.py --dataset
+      fb-messages --split-proportion 0.6 0.2 0.2
+    deps:
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    outs:
+    - path: data/lp_datasets/fb-messages.pkl
+      md5: b85851dda82b08755986c3f400daa9f3
+      size: 1443924
+  generate_link_prediction_datasets@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/generate_lp_datasets.py --dataset
+      ppi --split-proportion 0.6 0.2 0.2
+    deps:
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    outs:
+    - path: data/lp_datasets/ppi.pkl
+      md5: 8f2d73e74bcb3ba6594926cabf38434b
+      size: 4540248
+  generate_link_prediction_datasets@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/generate_lp_datasets.py --dataset
+      ogbl-collab --split-proportion 0.6 0.2 0.2
+    deps:
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    outs:
+    - path: data/lp_datasets/ogbl-collab.pkl
+      md5: eb1ea58d4e3d02ea9df992f57e973511
+      size: 13122657
+  precompute_temporal_scores@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      fb-forum
+    deps:
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/cached/temporal_scores/betweenness/fb-forum.pkl
+      md5: 4ee690a94c9ebfa195bfc29f7b61624a
+      size: 62709
+    - path: data/cached/temporal_scores/closeness/fb-forum.pkl
+      md5: 062f492d4c86dcfa301bcdce7d0879d5
+      size: 54029
+    - path: data/cached/temporal_scores/degree_deviation/fb-forum.pkl
+      md5: 0e763502ac65876339b9f8a541fb56d9
+      size: 107322
+    - path: data/cached/temporal_scores/k_shell_score/fb-forum.pkl
+      md5: 7c199d8d551bce14ab350a6051c1205e
+      size: 31951
+  precompute_temporal_scores@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      fb-messages
+    deps:
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/cached/temporal_scores/betweenness/fb-messages.pkl
+      md5: 54b6f721ccf86a94eeef9f15ac3aae9a
+      size: 40948
+    - path: data/cached/temporal_scores/closeness/fb-messages.pkl
+      md5: 139f57503be9cfd649b1d9e22cdfcc2b
+      size: 32464
+    - path: data/cached/temporal_scores/degree_deviation/fb-messages.pkl
+      md5: 7a07385c78585dce9fcd655a3ebe292d
+      size: 70041
+    - path: data/cached/temporal_scores/k_shell_score/fb-messages.pkl
+      md5: 1fdc056e2e6b798e94484fcac51d1b84
+      size: 21054
+  precompute_temporal_scores@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      bitcoin-otc
+    deps:
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/cached/temporal_scores/betweenness/bitcoin-otc.pkl
+      md5: 1ae39ecdc85305c8fe7acace1ac01b5b
+      size: 23566
+    - path: data/cached/temporal_scores/closeness/bitcoin-otc.pkl
+      md5: 016772b4410d1a27b44c633dabf0403a
+      size: 19366
+    - path: data/cached/temporal_scores/degree_deviation/bitcoin-otc.pkl
+      md5: 84c531b7bd8519d0c9e720f6268cd014
+      size: 40830
+    - path: data/cached/temporal_scores/k_shell_score/bitcoin-otc.pkl
+      md5: a5c55b0b8d2b028f3d6eca823c541c98
+      size: 11946
+  precompute_temporal_scores@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      bitcoin-alpha
+    deps:
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/cached/temporal_scores/betweenness/bitcoin-alpha.pkl
+      md5: cf93fe499eab062e12b9fa08ab0631a0
+      size: 20769
+    - path: data/cached/temporal_scores/closeness/bitcoin-alpha.pkl
+      md5: fad5797751b7692436949cea57bcf8c3
+      size: 16863
+    - path: data/cached/temporal_scores/degree_deviation/bitcoin-alpha.pkl
+      md5: 69b35d869bea99a25da9d31398a25963
+      size: 36233
+    - path: data/cached/temporal_scores/k_shell_score/bitcoin-alpha.pkl
+      md5: e4b6f331ab9115385a0284e32d8fc78d
+      size: 10409
+  precompute_temporal_scores@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      ppi
+    deps:
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/cached/temporal_scores/betweenness/ppi.pkl
+      md5: b7bac4ff3ad4b381d8786e273ec5d0cc
+      size: 77383
+    - path: data/cached/temporal_scores/closeness/ppi.pkl
+      md5: 7c646e2e9d8497fb7177d303c16e0632
+      size: 64347
+    - path: data/cached/temporal_scores/degree_deviation/ppi.pkl
+      md5: f219f8f94f7db9cfd0d9f45b98af9026
+      size: 126847
+    - path: data/cached/temporal_scores/k_shell_score/ppi.pkl
+      md5: b7b4eec4dafcb82b289abc7ddfb078c5
+      size: 43214
+  precompute_temporal_scores@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      ogbl-collab
+    deps:
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/cached/temporal_scores/betweenness/ogbl-collab.pkl
+      md5: 96f5bee98f5cb8a36e63e11ed4084917
+      size: 255417
+    - path: data/cached/temporal_scores/closeness/ogbl-collab.pkl
+      md5: 7a7842dd1508c31d76179cb58c5998c1
+      size: 230686
+    - path: data/cached/temporal_scores/degree_deviation/ogbl-collab.pkl
+      md5: cc819c7bea2cb593b7c8fc3086ffbeab
+      size: 418488
+    - path: data/cached/temporal_scores/k_shell_score/ogbl-collab.pkl
+      md5: 40cee60523d6094a76598249796f3e39
+      size: 141742
+  sample_random_walks@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/sample_random_walks.py --dataset
+      bitcoin-alpha --runs 25
+    deps:
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/scripts/sample_random_walks.py
+      md5: e6a9cf8293c1ffcee067490439ff5e39
+      size: 1197
+    outs:
+    - path: data/random_walks/bitcoin-alpha/
+      md5: 8e1bc2dd870b496566dcfbcaa229fe40.dir
+      size: 28462486250
+      nfiles: 1250
+  sample_random_walks@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/sample_random_walks.py --dataset
+      bitcoin-otc --runs 25
+    deps:
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/scripts/sample_random_walks.py
+      md5: e6a9cf8293c1ffcee067490439ff5e39
+      size: 1197
+    outs:
+    - path: data/random_walks/bitcoin-otc/
+      md5: 22f504cbcf665cff780dc478d606b8be.dir
+      size: 126126417750
+      nfiles: 3750
+  sample_random_walks@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/sample_random_walks.py --dataset
+      fb-forum --runs 25
+    deps:
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/scripts/sample_random_walks.py
+      md5: e6a9cf8293c1ffcee067490439ff5e39
+      size: 1197
+    outs:
+    - path: data/random_walks/fb-forum/
+      md5: 7cd751980831d299f6ac8f854f7f5975.dir
+      size: 90425818500
+      nfiles: 4500
+  sample_random_walks@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/sample_random_walks.py --dataset
+      fb-messages --runs 25
+    deps:
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/scripts/sample_random_walks.py
+      md5: e6a9cf8293c1ffcee067490439ff5e39
+      size: 1197
+    outs:
+    - path: data/random_walks/fb-messages/
+      md5: 3f306c216fff69d94aab4b78a1af3ba8.dir
+      size: 203978841000
+      nfiles: 5250
+  sample_random_walks@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/sample_random_walks.py --dataset
+      ppi --runs 25
+    deps:
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/scripts/sample_random_walks.py
+      md5: e6a9cf8293c1ffcee067490439ff5e39
+      size: 1197
+    outs:
+    - path: data/random_walks/ppi/
+      md5: 37ef4dbb2cb358d822c989def4cf388a.dir
+      size: 471379655500
+      nfiles: 2500
+  sample_random_walks@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/sample_random_walks.py --dataset
+      ogbl-collab --runs 25
+    deps:
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/scripts/sample_random_walks.py
+      md5: e6a9cf8293c1ffcee067490439ff5e39
+      size: 1197
+    outs:
+    - path: data/random_walks/ogbl-collab/
+      md5: c103ee2498a2f2f190b85bbef2eae186.dir
+      size: 658432796775
+      nfiles: 525
+  embed_Node2Vec_precomputed@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset bitcoin-alpha --precomputed-rw --runs 25
+    deps:
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/random_walks/bitcoin-alpha/
+      md5: 8e1bc2dd870b496566dcfbcaa229fe40.dir
+      size: 28462486250
+      nfiles: 1250
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/Node2Vec/bitcoin-alpha.pkl
+      md5: c135769100eda9521621c2998058b25a
+      size: 21397694
+    - path: data/embeddings/Node2Vec/bitcoin-alpha_metadata.pkl
+      md5: 92a3dca0b89537869fcd531713131ef3
+      size: 29468284
+  embed_Node2Vec_precomputed@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset bitcoin-otc --precomputed-rw --runs 25
+    deps:
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/random_walks/bitcoin-otc/
+      md5: 22f504cbcf665cff780dc478d606b8be.dir
+      size: 126126417750
+      nfiles: 3750
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/Node2Vec/bitcoin-otc.pkl
+      md5: 5583b9c8f4275706ef40913a3f5f86f8
+      size: 107230373
+    - path: data/embeddings/Node2Vec/bitcoin-otc_metadata.pkl
+      md5: d82816f99dd78c73f1dbb204dbf34045
+      size: 17116589
+  embed_Node2Vec_precomputed@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset fb-forum --precomputed-rw --runs 25
+    deps:
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/random_walks/fb-forum/
+      md5: 7cd751980831d299f6ac8f854f7f5975.dir
+      size: 90425818500
+      nfiles: 4500
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/Node2Vec/fb-forum.pkl
+      md5: 21bbc79e637ba2c245ee8d5aa0b35d36
+      size: 44313610
+    - path: data/embeddings/Node2Vec/fb-forum_metadata.pkl
+      md5: 203a09f1621d2b6747cf591217ba5e7a
+      size: 7625059
+  embed_Node2Vec_precomputed@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset fb-messages --precomputed-rw --runs 25
+    deps:
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/random_walks/fb-messages/
+      md5: 3f306c216fff69d94aab4b78a1af3ba8.dir
+      size: 203978841000
+      nfiles: 5250
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/Node2Vec/fb-messages.pkl
+      md5: 77cd8d8b6287222d980be713350a1ebf
+      size: 65975355
+    - path: data/embeddings/Node2Vec/fb-messages_metadata.pkl
+      md5: 4a838d6f7d9deca1cbfb3ba3437d3d8b
+      size: 11129061
+  embed_Node2Vec_precomputed@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset ppi --precomputed-rw --runs 25
+    deps:
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/random_walks/ppi/
+      md5: 37ef4dbb2cb358d822c989def4cf388a.dir
+      size: 471379655500
+      nfiles: 2500
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/Node2Vec/ppi.pkl
+      md5: 6f18a4e50c9feff7307dfd18f9526513
+      size: 473074926
+    - path: data/embeddings/Node2Vec/ppi_metadata.pkl
+      md5: 5021e72f7f2362121164dbe95788c259
+      size: 6448875
+  embed_Node2Vec_precomputed@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset ogbl-collab --precomputed-rw --runs 25
+    deps:
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/random_walks/ogbl-collab/
+      md5: c103ee2498a2f2f190b85bbef2eae186.dir
+      size: 658432796775
+      nfiles: 525
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/Node2Vec/ogbl-collab.pkl
+      md5: a58ab0c42845db5c70b6c71d5b43e703
+      size: 4401579343
+    - path: data/embeddings/Node2Vec/ogbl-collab_metadata.pkl
+      md5: 0040d0901481fa0c5d464558c1887688
+      size: 8493054
+  evaluate_lp@Node2Vec:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model Node2Vec  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/Node2Vec/
+      md5: d64dc8b87b614e955b3c74512cabbabe.dir
+      size: 5193852223
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/Node2Vec/
+      md5: c4eb7b855a24bb396d389b631c76f26e.dir
+      size: 2512667
+      nfiles: 12
+  evaluate_lp@GAE:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model GAE  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/GAE/
+      md5: 0f42da2f2bb2bc1180ac190197bb80eb.dir
+      size: 3519238373
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/GAE/
+      md5: f72f75b2c147a5f0c402575a387a33d4.dir
+      size: 6274387
+      nfiles: 12
+  precompute_temporal_scores_prev@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      fb-forum --prev-snapshot-scoring
+    deps:
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/prev/cached/temporal_scores/betweenness/fb-forum.pkl
+      md5: 9ec1bf674ffb1964e0fe91736c6b564b
+      size: 61523
+    - path: data/prev/cached/temporal_scores/closeness/fb-forum.pkl
+      md5: cd7970a62f833f68b0dbb33d29e3cc76
+      size: 52080
+    - path: data/prev/cached/temporal_scores/degree_deviation/fb-forum.pkl
+      md5: 2b506ce19af2caec012153f5762944b0
+      size: 105316
+    - path: data/prev/cached/temporal_scores/k_shell_score/fb-forum.pkl
+      md5: ed0c52c3a64a103bcbe094d69e6ebc08
+      size: 31339
+  precompute_temporal_scores_prev@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      fb-messages --prev-snapshot-scoring
+    deps:
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/prev/cached/temporal_scores/betweenness/fb-messages.pkl
+      md5: db414b8bcab8823206fea01f5598d6be
+      size: 72745
+    - path: data/prev/cached/temporal_scores/closeness/fb-messages.pkl
+      md5: 8fc1e2adcc59d0ae3277dd1d9530ebe5
+      size: 59177
+    - path: data/prev/cached/temporal_scores/degree_deviation/fb-messages.pkl
+      md5: a3db51ac35fee9b59117314499c936c9
+      size: 123369
+    - path: data/prev/cached/temporal_scores/k_shell_score/fb-messages.pkl
+      md5: ef8ebb07477e7a60f05f9b65582f81af
+      size: 37764
+  precompute_temporal_scores_prev@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      bitcoin-otc --prev-snapshot-scoring
+    deps:
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-otc.pkl
+      md5: f50f974b3630450d47c7aa231d1b16fb
+      size: 50367
+    - path: data/prev/cached/temporal_scores/closeness/bitcoin-otc.pkl
+      md5: e6aed7d296182d8cb259c7ed55a6e03f
+      size: 40840
+    - path: data/prev/cached/temporal_scores/degree_deviation/bitcoin-otc.pkl
+      md5: 3b477558df6ce6d293ef02bb624682c7
+      size: 85440
+    - path: data/prev/cached/temporal_scores/k_shell_score/bitcoin-otc.pkl
+      md5: 0d8371bb44dba58fdf2eb726a3f142ed
+      size: 26287
+  precompute_temporal_scores_prev@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      bitcoin-alpha --prev-snapshot-scoring
+    deps:
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-alpha.pkl
+      md5: da818eca9f75bc8e8a9dd2aa98ccd83c
+      size: 36708
+    - path: data/prev/cached/temporal_scores/closeness/bitcoin-alpha.pkl
+      md5: c4eb4da4f06500d04330a7c343378778
+      size: 29652
+    - path: data/prev/cached/temporal_scores/degree_deviation/bitcoin-alpha.pkl
+      md5: fa48c4437bb261da5dc8c977deb3aa96
+      size: 63092
+    - path: data/prev/cached/temporal_scores/k_shell_score/bitcoin-alpha.pkl
+      md5: d40db501965783cf116443e7473f2c91
+      size: 18704
+  precompute_temporal_scores_prev@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      ppi --prev-snapshot-scoring
+    deps:
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/prev/cached/temporal_scores/betweenness/ppi.pkl
+      md5: 85985cc7321a3e2a07756cb1f0fa5efc
+      size: 508149
+    - path: data/prev/cached/temporal_scores/closeness/ppi.pkl
+      md5: d62f2285c880a44ce5b0e050eb86f7d4
+      size: 412555
+    - path: data/prev/cached/temporal_scores/degree_deviation/ppi.pkl
+      md5: 53d0c254da555453e259207118f130fc
+      size: 826818
+    - path: data/prev/cached/temporal_scores/k_shell_score/ppi.pkl
+      md5: ccefb8d1b14436c1732b49f809d341cc
+      size: 285550
+  precompute_temporal_scores_prev@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name
+      ogbl-collab --prev-snapshot-scoring
+    deps:
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    params:
+      experiments/configs/precompute_temporal_scores.yaml:
+        timestamp_format_year:
+        - ppi
+        - ogbl-collab
+    outs:
+    - path: data/prev/cached/temporal_scores/betweenness/ogbl-collab.pkl
+      md5: f1a94578e8ce0d320d76527a37222ec6
+      size: 2377703
+    - path: data/prev/cached/temporal_scores/closeness/ogbl-collab.pkl
+      md5: d01e0f201963643ace6951e1d1bfd235
+      size: 2152631
+    - path: data/prev/cached/temporal_scores/degree_deviation/ogbl-collab.pkl
+      md5: 3f96793e0e14ffac01f24956558573d6
+      size: 3886894
+    - path: data/prev/cached/temporal_scores/k_shell_score/ogbl-collab.pkl
+      md5: cb30b22340716bc6eafa5c81be1dda81
+      size: 1321735
+  embed_RAFENNode2Vec_ALL_Alpha@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL_Alpha --dataset bitcoin-alpha --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-alpha.pkl
+      md5: c135769100eda9521621c2998058b25a
+      size: 21397694
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL_Alpha.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/bitcoin-alpha.pkl
+      md5: 9383170f73f684e1bb5987662c682123
+      size: 21668337
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/bitcoin-alpha_metadata.pkl
+      md5: 0259f12677c243147479387a6ff08f56
+      size: 28684637
+  embed_RAFENNode2Vec_ALL_Alpha@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL_Alpha --dataset bitcoin-otc --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-otc.pkl
+      md5: 5583b9c8f4275706ef40913a3f5f86f8
+      size: 107230373
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL_Alpha.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/bitcoin-otc.pkl
+      md5: cf589cceb5a3d32f0ba2b50305749953
+      size: 107690250
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/bitcoin-otc_metadata.pkl
+      md5: e7790eeb5942e33b0ed6aba441593b48
+      size: 19057078
+  embed_RAFENNode2Vec_ALL_Alpha@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL_Alpha --dataset fb-forum --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-forum.pkl
+      md5: 21bbc79e637ba2c245ee8d5aa0b35d36
+      size: 44313610
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL_Alpha.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/fb-forum.pkl
+      md5: 6911263566318f70386a7af6727b9e10
+      size: 44501336
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/fb-forum_metadata.pkl
+      md5: 9259a0682c623fcc2c2026500af1cf3e
+      size: 8545288
+  embed_RAFENNode2Vec_ALL_Alpha@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL_Alpha --dataset fb-messages --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-messages.pkl
+      md5: 77cd8d8b6287222d980be713350a1ebf
+      size: 65975355
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL_Alpha.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/fb-messages.pkl
+      md5: bf01bb1acc5592eac6e45365a5a23834
+      size: 66285127
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/fb-messages_metadata.pkl
+      md5: 69aad37a81e323bf82f33b0c83ba8e0d
+      size: 13628131
+  embed_RAFENNode2Vec_ALL_Alpha@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL_Alpha --dataset ppi --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ppi.pkl
+      md5: 6f18a4e50c9feff7307dfd18f9526513
+      size: 473074926
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL_Alpha.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/ppi.pkl
+      md5: 0eaa766d0f757f14d39a6c5a1882cdfd
+      size: 475580047
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/ppi_metadata.pkl
+      md5: bdc71d478fb5c7cba26dbf783e044245
+      size: 8865636
+  embed_RAFENNode2Vec_ALL_Alpha@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL_Alpha --dataset ogbl-collab --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ogbl-collab.pkl
+      md5: a58ab0c42845db5c70b6c71d5b43e703
+      size: 4401579343
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL_Alpha.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/ogbl-collab.pkl
+      md5: 88dfb36ed8e8a559abbcd2ac5d8b5ca2
+      size: 4424914262
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/ogbl-collab_metadata.pkl
+      md5: 0b0b6d73935e3db75237a2d2a45dde95
+      size: 11621572
+  embed_RAFENNode2Vec_EJ_Alpha@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Alpha --dataset bitcoin-alpha --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-alpha.pkl
+      md5: c135769100eda9521621c2998058b25a
+      size: 21397694
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Alpha.yaml
+      md5: ac7198656bf2765547914d295a5b25c0
+      size: 511
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/bitcoin-alpha.pkl
+      md5: 399eef9c4b1cce0fa9bd1575a41edc3a
+      size: 21668337
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/bitcoin-alpha_metadata.pkl
+      md5: 95001f2c1a492d104b866aee30aaf00b
+      size: 28684637
+  embed_RAFENNode2Vec_EJ_Alpha@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Alpha --dataset bitcoin-otc --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-otc.pkl
+      md5: 5583b9c8f4275706ef40913a3f5f86f8
+      size: 107230373
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Alpha.yaml
+      md5: ac7198656bf2765547914d295a5b25c0
+      size: 511
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/bitcoin-otc.pkl
+      md5: e05771472fb958e885b0732dbfadd40c
+      size: 107690250
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/bitcoin-otc_metadata.pkl
+      md5: 6aa6983d8abd45e3122a5d336cd0317c
+      size: 19057078
+  embed_RAFENNode2Vec_EJ_Alpha@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Alpha --dataset fb-forum --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-forum.pkl
+      md5: 21bbc79e637ba2c245ee8d5aa0b35d36
+      size: 44313610
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Alpha.yaml
+      md5: ac7198656bf2765547914d295a5b25c0
+      size: 511
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/fb-forum.pkl
+      md5: 9ce6dcac211e06d0cd0b8c7cc7b11843
+      size: 44501336
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/fb-forum_metadata.pkl
+      md5: fb66f1027d48f24c411a40fb869194a3
+      size: 8545288
+  embed_RAFENNode2Vec_EJ_Alpha@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Alpha --dataset fb-messages --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-messages.pkl
+      md5: 77cd8d8b6287222d980be713350a1ebf
+      size: 65975355
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Alpha.yaml
+      md5: ac7198656bf2765547914d295a5b25c0
+      size: 511
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/fb-messages.pkl
+      md5: 6f12ee12381ea1040e4d702615430294
+      size: 66285127
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/fb-messages_metadata.pkl
+      md5: 15fa01622097a1aff3f1b3ad2385efce
+      size: 13628131
+  embed_RAFENNode2Vec_EJ_Alpha@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Alpha --dataset ppi --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ppi.pkl
+      md5: 6f18a4e50c9feff7307dfd18f9526513
+      size: 473074926
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Alpha.yaml
+      md5: ac7198656bf2765547914d295a5b25c0
+      size: 511
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/ppi.pkl
+      md5: 3a0bee1e1e6daa27ed6ccd5e91c99db5
+      size: 475580047
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/ppi_metadata.pkl
+      md5: 37a7de3041baf13a22c4d8b7320ed83e
+      size: 8865636
+  embed_RAFENNode2Vec_EJ_Alpha@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Alpha --dataset ogbl-collab --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ogbl-collab.pkl
+      md5: a58ab0c42845db5c70b6c71d5b43e703
+      size: 4401579343
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Alpha.yaml
+      md5: ac7198656bf2765547914d295a5b25c0
+      size: 511
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/ogbl-collab.pkl
+      md5: 30cda3b635ad8d985ed1736338d1f200
+      size: 4424914262
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/ogbl-collab_metadata.pkl
+      md5: 3c4cfc7965c69a828e601850d047f298
+      size: 11621572
+  embed_RAFENNode2Vec_TB_Alpha@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Alpha --dataset bitcoin-alpha --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-alpha.pkl
+      md5: c135769100eda9521621c2998058b25a
+      size: 21397694
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-alpha.pkl
+      md5: da818eca9f75bc8e8a9dd2aa98ccd83c
+      size: 36708
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Alpha.yaml
+      md5: dedfd79a0f8f11ecb470b905a937c054
+      size: 575
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/bitcoin-alpha.pkl
+      md5: 86bf04478e791ae24891d4e8020d6ece
+      size: 21668337
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/bitcoin-alpha_metadata.pkl
+      md5: 265664e4bcea6cbfcaa74798a55c7e16
+      size: 28684637
+  embed_RAFENNode2Vec_TB_Alpha@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Alpha --dataset bitcoin-otc --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-otc.pkl
+      md5: 5583b9c8f4275706ef40913a3f5f86f8
+      size: 107230373
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-otc.pkl
+      md5: f50f974b3630450d47c7aa231d1b16fb
+      size: 50367
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Alpha.yaml
+      md5: dedfd79a0f8f11ecb470b905a937c054
+      size: 575
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/bitcoin-otc.pkl
+      md5: 86963b8c7b04efab84e1236d666bc998
+      size: 107690250
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/bitcoin-otc_metadata.pkl
+      md5: 1e98dbc068b66fa79a6435525bf6b134
+      size: 19057078
+  embed_RAFENNode2Vec_TB_Alpha@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Alpha --dataset fb-forum --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-forum.pkl
+      md5: 21bbc79e637ba2c245ee8d5aa0b35d36
+      size: 44313610
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/prev/cached/temporal_scores/betweenness/fb-forum.pkl
+      md5: 9ec1bf674ffb1964e0fe91736c6b564b
+      size: 61523
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Alpha.yaml
+      md5: dedfd79a0f8f11ecb470b905a937c054
+      size: 575
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/fb-forum.pkl
+      md5: 202e4be8a5517886b5426c62b9eea154
+      size: 44501336
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/fb-forum_metadata.pkl
+      md5: b06051c35a16df14c07e06aef60052a6
+      size: 8545288
+  embed_RAFENNode2Vec_TB_Alpha@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Alpha --dataset fb-messages --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-messages.pkl
+      md5: 77cd8d8b6287222d980be713350a1ebf
+      size: 65975355
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/prev/cached/temporal_scores/betweenness/fb-messages.pkl
+      md5: db414b8bcab8823206fea01f5598d6be
+      size: 72745
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Alpha.yaml
+      md5: dedfd79a0f8f11ecb470b905a937c054
+      size: 575
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/fb-messages.pkl
+      md5: 936ba861ee08e94df20419f0e37e94be
+      size: 66285127
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/fb-messages_metadata.pkl
+      md5: b5e44bebc0b902c40155dd62bd6a9477
+      size: 13628131
+  embed_RAFENNode2Vec_TB_Alpha@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Alpha --dataset ppi --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ppi.pkl
+      md5: 6f18a4e50c9feff7307dfd18f9526513
+      size: 473074926
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/prev/cached/temporal_scores/betweenness/ppi.pkl
+      md5: 85985cc7321a3e2a07756cb1f0fa5efc
+      size: 508149
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Alpha.yaml
+      md5: dedfd79a0f8f11ecb470b905a937c054
+      size: 575
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/ppi.pkl
+      md5: 559f53fa32655e1319c1fee1348a6cd2
+      size: 475580047
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/ppi_metadata.pkl
+      md5: 7ff01ef291ecc226c877fd58fad9aa2d
+      size: 8865636
+  embed_RAFENNode2Vec_TB_Alpha@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Alpha --dataset ogbl-collab --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ogbl-collab.pkl
+      md5: a58ab0c42845db5c70b6c71d5b43e703
+      size: 4401579343
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/prev/cached/temporal_scores/betweenness/ogbl-collab.pkl
+      md5: f1a94578e8ce0d320d76527a37222ec6
+      size: 2377703
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Alpha.yaml
+      md5: dedfd79a0f8f11ecb470b905a937c054
+      size: 575
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/ogbl-collab.pkl
+      md5: 60406afe165860ef526afb166112c4da
+      size: 4424914262
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/ogbl-collab_metadata.pkl
+      md5: 4daad6f0003b8e005b63ac9686101c93
+      size: 11621572
+  embed_RAFENNode2Vec_TB_Weighted@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Weighted --dataset bitcoin-alpha --precomputed-rw --runs 25
+      --loss-scaling --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-alpha.pkl
+      md5: c135769100eda9521621c2998058b25a
+      size: 21397694
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-alpha.pkl
+      md5: da818eca9f75bc8e8a9dd2aa98ccd83c
+      size: 36708
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Weighted.yaml
+      md5: faa2380415d7a5f8fd6bca8283fcb7d6
+      size: 634
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/bitcoin-alpha.pkl
+      md5: 4e2aee3b709ba5436a044aa16780bb57
+      size: 21668337
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/bitcoin-alpha_metadata.pkl
+      md5: d42629b9fd68a49d14f6713b3a3ab27d
+      size: 28692637
+  embed_RAFENNode2Vec_TB_Weighted@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Weighted --dataset bitcoin-otc --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-otc.pkl
+      md5: 5583b9c8f4275706ef40913a3f5f86f8
+      size: 107230373
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-otc.pkl
+      md5: f50f974b3630450d47c7aa231d1b16fb
+      size: 50367
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Weighted.yaml
+      md5: faa2380415d7a5f8fd6bca8283fcb7d6
+      size: 634
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/bitcoin-otc.pkl
+      md5: 4152618d4cc75cb43b78fce2b1e7a56d
+      size: 107690250
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/bitcoin-otc_metadata.pkl
+      md5: 13ed981c79014bba7c198b58ee707fd9
+      size: 19018081
+  embed_RAFENNode2Vec_TB_Weighted@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Weighted --dataset fb-forum --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-forum.pkl
+      md5: 21bbc79e637ba2c245ee8d5aa0b35d36
+      size: 44313610
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/prev/cached/temporal_scores/betweenness/fb-forum.pkl
+      md5: 9ec1bf674ffb1964e0fe91736c6b564b
+      size: 61523
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Weighted.yaml
+      md5: faa2380415d7a5f8fd6bca8283fcb7d6
+      size: 634
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/fb-forum.pkl
+      md5: 91c9a541e82a831338851f8e3caf0397
+      size: 44501336
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/fb-forum_metadata.pkl
+      md5: 47dcc11079e83ac8d2bd278930b93578
+      size: 8496532
+  embed_RAFENNode2Vec_TB_Weighted@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Weighted --dataset fb-messages --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-messages.pkl
+      md5: 77cd8d8b6287222d980be713350a1ebf
+      size: 65975355
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/prev/cached/temporal_scores/betweenness/fb-messages.pkl
+      md5: db414b8bcab8823206fea01f5598d6be
+      size: 72745
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Weighted.yaml
+      md5: faa2380415d7a5f8fd6bca8283fcb7d6
+      size: 634
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/fb-messages.pkl
+      md5: 160ff525bda8d3eccdd85c6a0870eab9
+      size: 66285127
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/fb-messages_metadata.pkl
+      md5: 63e7dac5af0721e5f6586b68436b5eaa
+      size: 13569634
+  embed_RAFENNode2Vec_TB_Weighted@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Weighted --dataset ppi --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ppi.pkl
+      md5: 6f18a4e50c9feff7307dfd18f9526513
+      size: 473074926
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/prev/cached/temporal_scores/betweenness/ppi.pkl
+      md5: 85985cc7321a3e2a07756cb1f0fa5efc
+      size: 508149
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Weighted.yaml
+      md5: faa2380415d7a5f8fd6bca8283fcb7d6
+      size: 634
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/ppi.pkl
+      md5: 41efdf8cc4a449ad0ac122cbdef4b92c
+      size: 475580047
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/ppi_metadata.pkl
+      md5: 3f6cd88c93f60dd31fb45a0896c82eed
+      size: 8839630
+  embed_RAFENNode2Vec_TB_Weighted@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_TB_Weighted --dataset ogbl-collab --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ogbl-collab.pkl
+      md5: a58ab0c42845db5c70b6c71d5b43e703
+      size: 4401579343
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/prev/cached/temporal_scores/betweenness/ogbl-collab.pkl
+      md5: f1a94578e8ce0d320d76527a37222ec6
+      size: 2377703
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_TB_Weighted.yaml
+      md5: faa2380415d7a5f8fd6bca8283fcb7d6
+      size: 634
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/ogbl-collab.pkl
+      md5: 544f3918fd5fa94a1b7716d6ed8251e0
+      size: 4424914262
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/ogbl-collab_metadata.pkl
+      md5: f55cb00ef2646f52715c9ac81182ba6f
+      size: 11625172
+  embed_RAFENNode2Vec_ALL@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL --dataset bitcoin-alpha --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-alpha.pkl
+      md5: c135769100eda9521621c2998058b25a
+      size: 21397694
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL/bitcoin-alpha.pkl
+      md5: 9448a82588a2ed6617a75955e17e5c81
+      size: 21668337
+    - path: data/embeddings/RAFENNode2Vec_ALL/bitcoin-alpha_metadata.pkl
+      md5: e6a3c92c79065ff5d8b0a55b9fdd8dc4
+      size: 28684661
+  embed_RAFENNode2Vec_ALL@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL --dataset bitcoin-otc --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-otc.pkl
+      md5: 5583b9c8f4275706ef40913a3f5f86f8
+      size: 107230373
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL/bitcoin-otc.pkl
+      md5: bb25f91b35bd64d5fbcec4f82613a426
+      size: 107690250
+    - path: data/embeddings/RAFENNode2Vec_ALL/bitcoin-otc_metadata.pkl
+      md5: 261baf993be98e92d5a179c847ad72ef
+      size: 19057102
+  embed_RAFENNode2Vec_ALL@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL --dataset fb-forum --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/Node2Vec/fb-forum.pkl
+      md5: 21bbc79e637ba2c245ee8d5aa0b35d36
+      size: 44313610
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL/fb-forum.pkl
+      md5: efae0b03b05f05b6b3f371406566862c
+      size: 44501336
+    - path: data/embeddings/RAFENNode2Vec_ALL/fb-forum_metadata.pkl
+      md5: 67385503720ea3e3931d943304982c42
+      size: 8545312
+  embed_RAFENNode2Vec_ALL@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL --dataset fb-messages --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/Node2Vec/fb-messages.pkl
+      md5: 77cd8d8b6287222d980be713350a1ebf
+      size: 65975355
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL/fb-messages.pkl
+      md5: 16f0033e278e1aa0e0b36d8b5d7e2df5
+      size: 66285127
+    - path: data/embeddings/RAFENNode2Vec_ALL/fb-messages_metadata.pkl
+      md5: 62f28855f710d542e64867543de06e16
+      size: 13628155
+  embed_RAFENNode2Vec_ALL@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL --dataset ppi --precomputed-rw --runs 25 --loss-scaling --prev-snapshot-alignment
+      --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/Node2Vec/ppi.pkl
+      md5: 6f18a4e50c9feff7307dfd18f9526513
+      size: 473074926
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL/ppi.pkl
+      md5: ba14e7aea9c232a22ec66e1e6087fb8d
+      size: 475580047
+    - path: data/embeddings/RAFENNode2Vec_ALL/ppi_metadata.pkl
+      md5: fafdaf615ef6e8231ca85573458a03af
+      size: 8865660
+  embed_RAFENNode2Vec_ALL@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_ALL --dataset ogbl-collab --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/Node2Vec/ogbl-collab.pkl
+      md5: a58ab0c42845db5c70b6c71d5b43e703
+      size: 4401579343
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_ALL.yaml
+      md5: 35d8da4d05401b1618e52d13b9cd5ed3
+      size: 506
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_ALL/ogbl-collab.pkl
+      md5: 2ba9ffab9b5e33f41fe9d01958d4061e
+      size: 4424914262
+    - path: data/embeddings/RAFENNode2Vec_ALL/ogbl-collab_metadata.pkl
+      md5: 0c8eb85e1d116176c799bab88543f099
+      size: 11621596
+  embed_RAFENNode2Vec_EJ_Weighted@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Weighted --dataset bitcoin-alpha --precomputed-rw --runs 25
+      --loss-scaling --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-alpha.pkl
+      md5: c135769100eda9521621c2998058b25a
+      size: 21397694
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Weighted.yaml
+      md5: ba6db6c33351db789efe4f13ab4413de
+      size: 579
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/bitcoin-alpha.pkl
+      md5: b8a85a055c22189ff4c10870e6ee1d5d
+      size: 21668337
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/bitcoin-alpha_metadata.pkl
+      md5: 97a7d6115828dd1aadb2ce45ef2b9718
+      size: 28692637
+  embed_RAFENNode2Vec_EJ_Weighted@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Weighted --dataset bitcoin-otc --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/bitcoin-otc.pkl
+      md5: 5583b9c8f4275706ef40913a3f5f86f8
+      size: 107230373
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Weighted.yaml
+      md5: ba6db6c33351db789efe4f13ab4413de
+      size: 579
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/bitcoin-otc.pkl
+      md5: a7e52e632f7239c8cb7496d18c052cc1
+      size: 107690250
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/bitcoin-otc_metadata.pkl
+      md5: cd5d1c613e0d010e6eb26a4f71240039
+      size: 19018081
+  embed_RAFENNode2Vec_EJ_Weighted@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Weighted --dataset fb-forum --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-forum.pkl
+      md5: 21bbc79e637ba2c245ee8d5aa0b35d36
+      size: 44313610
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Weighted.yaml
+      md5: ba6db6c33351db789efe4f13ab4413de
+      size: 579
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/fb-forum.pkl
+      md5: b3edb5b195bd556892fa68aaf2e83744
+      size: 44501336
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/fb-forum_metadata.pkl
+      md5: 711f3eda3a1a2e6ac357c4538883b7bd
+      size: 8496532
+  embed_RAFENNode2Vec_EJ_Weighted@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Weighted --dataset fb-messages --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/fb-messages.pkl
+      md5: 77cd8d8b6287222d980be713350a1ebf
+      size: 65975355
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Weighted.yaml
+      md5: ba6db6c33351db789efe4f13ab4413de
+      size: 579
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/fb-messages.pkl
+      md5: cf238f2d305f56863ff9272340ef6b07
+      size: 66285127
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/fb-messages_metadata.pkl
+      md5: 8519757892cffb4d56aeae9fb4544243
+      size: 13569634
+  embed_RAFENNode2Vec_EJ_Weighted@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Weighted --dataset ppi --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ppi.pkl
+      md5: 6f18a4e50c9feff7307dfd18f9526513
+      size: 473074926
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Weighted.yaml
+      md5: ba6db6c33351db789efe4f13ab4413de
+      size: 579
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/ppi.pkl
+      md5: e9a18fdb50c87b522d55891920d0e72a
+      size: 475580047
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/ppi_metadata.pkl
+      md5: 2d603734e987f095816ecf76dff8c217
+      size: 8839630
+  embed_RAFENNode2Vec_EJ_Weighted@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENNode2Vec_EJ_Weighted --dataset ogbl-collab --precomputed-rw --runs 25 --loss-scaling
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/ogbl-collab.pkl
+      md5: a58ab0c42845db5c70b6c71d5b43e703
+      size: 4401579343
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/RAFENNode2Vec_EJ_Weighted.yaml
+      md5: ba6db6c33351db789efe4f13ab4413de
+      size: 579
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/ogbl-collab.pkl
+      md5: 3144aad7513bf58990089ae955bd0300
+      size: 4424914262
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/ogbl-collab_metadata.pkl
+      md5: 2ad098298ed2313c955cc422713e7756
+      size: 11625172
+  posthoc_alignment_gae@PosthocALL:
+    cmd: PYTHONPATH=. python3 experiments/scripts/align_posthoc.py --model PosthocALL
+      --prev-snapshot-alignment --use-gae-embeddings
+    deps:
+    - path: data/embeddings/Node2Vec/
+      md5: d64dc8b87b614e955b3c74512cabbabe.dir
+      size: 5193852223
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/tg_graphs/
+      md5: 152383344d13442f924eb31447d04379.dir
+      size: 75590902
+      nfiles: 7
+    - path: experiments/configs/posthoc/PosthocALL.yaml
+      md5: d84e3691f5951eb0ec7522a4f7fb6ca1
+      size: 263
+    - path: experiments/scripts/align_posthoc.py
+      md5: fa527ca3e1b78c5b8b133aef53a0372c
+      size: 7790
+    outs:
+    - path: data/posthoc/PosthocALL_GAE/
+      md5: c06b1d2e31bec36dde6cb3d02261ce07.dir
+      size: 3520563948
+      nfiles: 12
+  posthoc_alignment_gae@PosthocEJ:
+    cmd: PYTHONPATH=. python3 experiments/scripts/align_posthoc.py --model PosthocEJ
+      --prev-snapshot-alignment --use-gae-embeddings
+    deps:
+    - path: data/embeddings/Node2Vec/
+      md5: d64dc8b87b614e955b3c74512cabbabe.dir
+      size: 5193852223
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/tg_graphs/
+      md5: 152383344d13442f924eb31447d04379.dir
+      size: 75590902
+      nfiles: 7
+    - path: experiments/configs/posthoc/PosthocEJ.yaml
+      md5: bbcfbe1976ccee3b266a707eb49ddb65
+      size: 267
+    - path: experiments/scripts/align_posthoc.py
+      md5: fa527ca3e1b78c5b8b133aef53a0372c
+      size: 7790
+    outs:
+    - path: data/posthoc/PosthocEJ_GAE/
+      md5: a08b0f1a6b0a90940e51e3d5f46161a8.dir
+      size: 3520563948
+      nfiles: 12
+  posthoc_alignment_gae@PosthocTB:
+    cmd: PYTHONPATH=. python3 experiments/scripts/align_posthoc.py --model PosthocTB
+      --prev-snapshot-alignment --use-gae-embeddings
+    deps:
+    - path: data/embeddings/Node2Vec/
+      md5: d64dc8b87b614e955b3c74512cabbabe.dir
+      size: 5193852223
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/tg_graphs/
+      md5: 152383344d13442f924eb31447d04379.dir
+      size: 75590902
+      nfiles: 7
+    - path: experiments/configs/posthoc/PosthocTB.yaml
+      md5: b272145f4975bbf687a06854691e7cc8
+      size: 330
+    - path: experiments/scripts/align_posthoc.py
+      md5: fa527ca3e1b78c5b8b133aef53a0372c
+      size: 7790
+    outs:
+    - path: data/posthoc/PosthocTB_GAE/
+      md5: 4b6cf844d7c0f040b8d511d2d476fa4a.dir
+      size: 3520563948
+      nfiles: 12
+  posthoc_alignment@PosthocALL:
+    cmd: PYTHONPATH=. python3 experiments/scripts/align_posthoc.py --model PosthocALL
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/
+      md5: d64dc8b87b614e955b3c74512cabbabe.dir
+      size: 5193852223
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/tg_graphs/
+      md5: 152383344d13442f924eb31447d04379.dir
+      size: 75590902
+      nfiles: 7
+    - path: experiments/configs/posthoc/PosthocALL.yaml
+      md5: d84e3691f5951eb0ec7522a4f7fb6ca1
+      size: 263
+    - path: experiments/scripts/align_posthoc.py
+      md5: fa527ca3e1b78c5b8b133aef53a0372c
+      size: 7790
+    outs:
+    - path: data/posthoc/PosthocALL/
+      md5: 168046c13559c8186493ccc095de79a3.dir
+      size: 3471814647
+      nfiles: 12
+  posthoc_alignment@PosthocEJ:
+    cmd: PYTHONPATH=. python3 experiments/scripts/align_posthoc.py --model PosthocEJ
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/
+      md5: d64dc8b87b614e955b3c74512cabbabe.dir
+      size: 5193852223
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/tg_graphs/
+      md5: 152383344d13442f924eb31447d04379.dir
+      size: 75590902
+      nfiles: 7
+    - path: experiments/configs/posthoc/PosthocEJ.yaml
+      md5: bbcfbe1976ccee3b266a707eb49ddb65
+      size: 267
+    - path: experiments/scripts/align_posthoc.py
+      md5: fa527ca3e1b78c5b8b133aef53a0372c
+      size: 7790
+    outs:
+    - path: data/posthoc/PosthocEJ/
+      md5: 68748622e4eb949a4b9cdeca0e191b3c.dir
+      size: 3471814647
+      nfiles: 12
+  posthoc_alignment@PosthocTB:
+    cmd: PYTHONPATH=. python3 experiments/scripts/align_posthoc.py --model PosthocTB
+      --prev-snapshot-alignment
+    deps:
+    - path: data/embeddings/Node2Vec/
+      md5: d64dc8b87b614e955b3c74512cabbabe.dir
+      size: 5193852223
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/tg_graphs/
+      md5: 152383344d13442f924eb31447d04379.dir
+      size: 75590902
+      nfiles: 7
+    - path: experiments/configs/posthoc/PosthocTB.yaml
+      md5: b272145f4975bbf687a06854691e7cc8
+      size: 330
+    - path: experiments/scripts/align_posthoc.py
+      md5: fa527ca3e1b78c5b8b133aef53a0372c
+      size: 7790
+    outs:
+    - path: data/posthoc/PosthocTB/
+      md5: 4a79d9c3131ad114f484f4f8a2688f16.dir
+      size: 3471814647
+      nfiles: 12
+  embed_GAE@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      bitcoin-alpha --runs 25 --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/GAE/bitcoin-alpha.pkl
+      md5: 542c87f66da313daf3392f382817fafe
+      size: 69480257
+    - path: data/embeddings/GAE/bitcoin-alpha_metadata.pkl
+      md5: 835ee8162118c38169d1511908314a0f
+      size: 2311071
+  embed_GAE@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      bitcoin-otc --runs 25 --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/GAE/bitcoin-otc.pkl
+      md5: 38061504edc74430ddfbaafd51a89a1f
+      size: 101944928
+    - path: data/embeddings/GAE/bitcoin-otc_metadata.pkl
+      md5: ba88c8729d02b040d4e5416d9ee3fd74
+      size: 2311071
+  embed_GAE@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      fb-forum --runs 25 --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/GAE/fb-forum.pkl
+      md5: d6e7e1533a9747fe63a6a8ad59f9da77
+      size: 39492303
+    - path: data/embeddings/GAE/fb-forum_metadata.pkl
+      md5: e2a712ff87258528a610a4aa2afdb43f
+      size: 2888677
+  embed_GAE@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      fb-messages --runs 25 --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/GAE/fb-messages.pkl
+      md5: 7986422ce60fa27804035ef28e1ee808
+      size: 62293226
+    - path: data/embeddings/GAE/fb-messages_metadata.pkl
+      md5: d00694d9cee6fc457a4fbd35eda5a5a4
+      size: 3466274
+  embed_GAE@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      ppi --runs 25 --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/GAE/ppi.pkl
+      md5: af43903a40f7c2d916beb85557e45a6c
+      size: 271874867
+    - path: data/embeddings/GAE/ppi_metadata.pkl
+      md5: 8ddcad84eaba7b664232aac7543a7f25
+      size: 2311071
+  embed_GAE@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      ogbl-collab --runs 25 --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings/GAE/ogbl-collab.pkl
+      md5: 2d6f7eba6f3732a458227b955bc59c62
+      size: 2957398354
+    - path: data/embeddings/GAE/ogbl-collab_metadata.pkl
+      md5: b15502483766f86027e98edf0d78dd27
+      size: 3466274
+  embed_RAFENGAE_ALL_Alpha@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL_Alpha --dataset bitcoin-alpha  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-alpha.pkl
+      md5: 542c87f66da313daf3392f382817fafe
+      size: 69480257
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL_Alpha.yaml
+      md5: b936e27a6ed47883ea4c6c39b740e053
+      size: 493
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/bitcoin-alpha.pkl
+      md5: 043fd99c5f9f2db9acc8d66389c23987
+      size: 71985195
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/bitcoin-alpha_metadata.pkl
+      md5: 09eedd9f00f929f6fd1ffd831878f72d
+      size: 3504372
+  embed_RAFENGAE_ALL_Alpha@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL_Alpha --dataset bitcoin-otc  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-otc.pkl
+      md5: 38061504edc74430ddfbaafd51a89a1f
+      size: 101944928
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL_Alpha.yaml
+      md5: b936e27a6ed47883ea4c6c39b740e053
+      size: 493
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/bitcoin-otc.pkl
+      md5: fad76dfdaa3011e4646b5fb344545c4d
+      size: 107690250
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/bitcoin-otc_metadata.pkl
+      md5: c18330c46c8f2281dea87d286c6846b4
+      size: 3504372
+  embed_RAFENGAE_ALL_Alpha@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL_Alpha --dataset fb-forum  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-forum.pkl
+      md5: d6e7e1533a9747fe63a6a8ad59f9da77
+      size: 39492303
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL_Alpha.yaml
+      md5: b936e27a6ed47883ea4c6c39b740e053
+      size: 493
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/fb-forum.pkl
+      md5: 86882bd843ec197d747be84a69f2b083
+      size: 44501336
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/fb-forum_metadata.pkl
+      md5: 28b70fe4fce8644007c22a1d86a574b3
+      size: 4380289
+  embed_RAFENGAE_ALL_Alpha@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL_Alpha --dataset fb-messages  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-messages.pkl
+      md5: 7986422ce60fa27804035ef28e1ee808
+      size: 62293226
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL_Alpha.yaml
+      md5: b936e27a6ed47883ea4c6c39b740e053
+      size: 493
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/fb-messages.pkl
+      md5: f150b7f2acd215401055943049e97000
+      size: 66285127
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/fb-messages_metadata.pkl
+      md5: 5a78e74c38a2d21dd1c59a4197e20d4c
+      size: 5256215
+  embed_RAFENGAE_ALL_Alpha@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL_Alpha --dataset ppi  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ppi.pkl
+      md5: af43903a40f7c2d916beb85557e45a6c
+      size: 271874867
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL_Alpha.yaml
+      md5: b936e27a6ed47883ea4c6c39b740e053
+      size: 493
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/ppi.pkl
+      md5: 0e6f6db287f70dee6c4eee47172b08bc
+      size: 475580047
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/ppi_metadata.pkl
+      md5: 7e5950d70e5ca33941b69315cd416941
+      size: 3504372
+  embed_RAFENGAE_ALL_Alpha@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL_Alpha --dataset ogbl-collab  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ogbl-collab.pkl
+      md5: 2d6f7eba6f3732a458227b955bc59c62
+      size: 2957398354
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL_Alpha.yaml
+      md5: b936e27a6ed47883ea4c6c39b740e053
+      size: 493
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/ogbl-collab.pkl
+      md5: ee5770646facbc499d55cb04afcda8b5
+      size: 4424914262
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/ogbl-collab_metadata.pkl
+      md5: a5e817ca660727307fdd153b5c239b42
+      size: 5256215
+  embed_RAFENGAE_ALL@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL --dataset bitcoin-alpha  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/GAE/bitcoin-alpha.pkl
+      md5: 542c87f66da313daf3392f382817fafe
+      size: 69480257
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL.yaml
+      md5: 24a4e3a72c9a2ba8350ba24b65104556
+      size: 376
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL/bitcoin-alpha.pkl
+      md5: a2a27aaa51375a6c863b697afc6b896e
+      size: 71985195
+    - path: data/embeddings/RAFENGAE_ALL/bitcoin-alpha_metadata.pkl
+      md5: 688210dfb09701986155305f8b68c7dd
+      size: 3504396
+  embed_RAFENGAE_ALL@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL --dataset bitcoin-otc  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/GAE/bitcoin-otc.pkl
+      md5: 38061504edc74430ddfbaafd51a89a1f
+      size: 101944928
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL.yaml
+      md5: 24a4e3a72c9a2ba8350ba24b65104556
+      size: 376
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL/bitcoin-otc.pkl
+      md5: ea60f52b360f5845a9c42fdd1023e437
+      size: 107690250
+    - path: data/embeddings/RAFENGAE_ALL/bitcoin-otc_metadata.pkl
+      md5: 6dfb9ded89a1a47cf4c9fe3fed5590ef
+      size: 3504396
+  embed_RAFENGAE_ALL@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL --dataset fb-forum  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/GAE/fb-forum.pkl
+      md5: d6e7e1533a9747fe63a6a8ad59f9da77
+      size: 39492303
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL.yaml
+      md5: 24a4e3a72c9a2ba8350ba24b65104556
+      size: 376
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL/fb-forum.pkl
+      md5: 3a78bb873b28f43e691e5cb434c60e24
+      size: 44501336
+    - path: data/embeddings/RAFENGAE_ALL/fb-forum_metadata.pkl
+      md5: db7d46e702b1aa09db8a9711bde20fe5
+      size: 4380313
+  embed_RAFENGAE_ALL@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL --dataset fb-messages  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/GAE/fb-messages.pkl
+      md5: 7986422ce60fa27804035ef28e1ee808
+      size: 62293226
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL.yaml
+      md5: 24a4e3a72c9a2ba8350ba24b65104556
+      size: 376
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL/fb-messages.pkl
+      md5: b253a78c5b3c7ca8361dbb6b26ea537e
+      size: 66285127
+    - path: data/embeddings/RAFENGAE_ALL/fb-messages_metadata.pkl
+      md5: 019ce13c77eeed1cf6cc22281f53b775
+      size: 5256239
+  embed_RAFENGAE_ALL@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL --dataset ppi  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/GAE/ppi.pkl
+      md5: af43903a40f7c2d916beb85557e45a6c
+      size: 271874867
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL.yaml
+      md5: 24a4e3a72c9a2ba8350ba24b65104556
+      size: 376
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL/ppi.pkl
+      md5: 678f4a0b4b04a50c605931a192bb65e5
+      size: 475580047
+    - path: data/embeddings/RAFENGAE_ALL/ppi_metadata.pkl
+      md5: 968a0ac4ef49fff1c2b8babff4c284d2
+      size: 3504396
+  embed_RAFENGAE_ALL@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_ALL --dataset ogbl-collab  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml --ignore-alpha-scaling
+    deps:
+    - path: data/embeddings/GAE/ogbl-collab.pkl
+      md5: 2d6f7eba6f3732a458227b955bc59c62
+      size: 2957398354
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_ALL.yaml
+      md5: 24a4e3a72c9a2ba8350ba24b65104556
+      size: 376
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_ALL/ogbl-collab.pkl
+      md5: e0890e9f43b696f3aa919f0f9c3122f6
+      size: 4424914262
+    - path: data/embeddings/RAFENGAE_ALL/ogbl-collab_metadata.pkl
+      md5: b5aaddbde2633fb6328c55ca2615f1f7
+      size: 5256239
+  embed_RAFENGAE_TB_Weighted@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Weighted --dataset bitcoin-alpha  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-alpha.pkl
+      md5: 542c87f66da313daf3392f382817fafe
+      size: 69480257
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-alpha.pkl
+      md5: da818eca9f75bc8e8a9dd2aa98ccd83c
+      size: 36708
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Weighted.yaml
+      md5: c91ccdf1f768cf3eef3e94f18c2b0878
+      size: 631
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Weighted/bitcoin-alpha.pkl
+      md5: e9f4ad86e301205b1872a114ec83ac56
+      size: 71985195
+    - path: data/embeddings/RAFENGAE_TB_Weighted/bitcoin-alpha_metadata.pkl
+      md5: 5d9176a9ab579a6acc46ccf0c618c224
+      size: 3434363
+  embed_RAFENGAE_TB_Weighted@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Weighted --dataset bitcoin-otc  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-otc.pkl
+      md5: 38061504edc74430ddfbaafd51a89a1f
+      size: 101944928
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-otc.pkl
+      md5: f50f974b3630450d47c7aa231d1b16fb
+      size: 50367
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Weighted.yaml
+      md5: c91ccdf1f768cf3eef3e94f18c2b0878
+      size: 631
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Weighted/bitcoin-otc.pkl
+      md5: 54c8b18887f2463a7583a4e3bc8174fc
+      size: 107690250
+    - path: data/embeddings/RAFENGAE_TB_Weighted/bitcoin-otc_metadata.pkl
+      md5: 55258152e1fa3c87e3a3785f080a09d5
+      size: 3434363
+  embed_RAFENGAE_TB_Weighted@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Weighted --dataset fb-forum  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-forum.pkl
+      md5: d6e7e1533a9747fe63a6a8ad59f9da77
+      size: 39492303
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/prev/cached/temporal_scores/betweenness/fb-forum.pkl
+      md5: 9ec1bf674ffb1964e0fe91736c6b564b
+      size: 61523
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Weighted.yaml
+      md5: c91ccdf1f768cf3eef3e94f18c2b0878
+      size: 631
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Weighted/fb-forum.pkl
+      md5: 6fbd61dd6d9cf076df58bc48dfc882f9
+      size: 44501336
+    - path: data/embeddings/RAFENGAE_TB_Weighted/fb-forum_metadata.pkl
+      md5: 5acc3c5e549e25533c6496719d852046
+      size: 4292780
+  embed_RAFENGAE_TB_Weighted@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Weighted --dataset fb-messages  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-messages.pkl
+      md5: 7986422ce60fa27804035ef28e1ee808
+      size: 62293226
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/prev/cached/temporal_scores/betweenness/fb-messages.pkl
+      md5: db414b8bcab8823206fea01f5598d6be
+      size: 72745
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Weighted.yaml
+      md5: c91ccdf1f768cf3eef3e94f18c2b0878
+      size: 631
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Weighted/fb-messages.pkl
+      md5: 157173aa243a8bd7bae3e435b6799e04
+      size: 66285127
+    - path: data/embeddings/RAFENGAE_TB_Weighted/fb-messages_metadata.pkl
+      md5: 7fbc86735c2cea9605018695786e9634
+      size: 5151197
+  embed_RAFENGAE_TB_Weighted@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Weighted --dataset ppi  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ppi.pkl
+      md5: af43903a40f7c2d916beb85557e45a6c
+      size: 271874867
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/prev/cached/temporal_scores/betweenness/ppi.pkl
+      md5: 85985cc7321a3e2a07756cb1f0fa5efc
+      size: 508149
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Weighted.yaml
+      md5: c91ccdf1f768cf3eef3e94f18c2b0878
+      size: 631
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Weighted/ppi.pkl
+      md5: d7afecdb393fb73ece56cd3e06dfcfbb
+      size: 475580047
+    - path: data/embeddings/RAFENGAE_TB_Weighted/ppi_metadata.pkl
+      md5: 6e7c36467a463764aebd52455f89bff4
+      size: 3434363
+  embed_RAFENGAE_TB_Weighted@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Weighted --dataset ogbl-collab  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ogbl-collab.pkl
+      md5: 2d6f7eba6f3732a458227b955bc59c62
+      size: 2957398354
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/prev/cached/temporal_scores/betweenness/ogbl-collab.pkl
+      md5: f1a94578e8ce0d320d76527a37222ec6
+      size: 2377703
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Weighted.yaml
+      md5: c91ccdf1f768cf3eef3e94f18c2b0878
+      size: 631
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Weighted/ogbl-collab.pkl
+      md5: 8456367ade4e331decd37575e01c7da2
+      size: 4424914262
+    - path: data/embeddings/RAFENGAE_TB_Weighted/ogbl-collab_metadata.pkl
+      md5: 62e3c9e1914edba21c03f104fca39379
+      size: 5151197
+  embed_RAFENGAE_EJ_Weighted@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Weighted --dataset bitcoin-alpha  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-alpha.pkl
+      md5: 542c87f66da313daf3392f382817fafe
+      size: 69480257
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Weighted.yaml
+      md5: c2de60a785e0f599fb7423078ef7cca7
+      size: 555
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/bitcoin-alpha.pkl
+      md5: 0261fb8f6764f3e0d716f8a026b0008e
+      size: 71985195
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/bitcoin-alpha_metadata.pkl
+      md5: 9a5553aa4a80403233d76250011e5ec5
+      size: 3434363
+  embed_RAFENGAE_EJ_Weighted@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Weighted --dataset bitcoin-otc  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-otc.pkl
+      md5: 38061504edc74430ddfbaafd51a89a1f
+      size: 101944928
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Weighted.yaml
+      md5: c2de60a785e0f599fb7423078ef7cca7
+      size: 555
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/bitcoin-otc.pkl
+      md5: aebb243389646b2201f5a99b1f003e00
+      size: 107690250
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/bitcoin-otc_metadata.pkl
+      md5: 78316e342aeaacd8f0b4c5ebcdb7054a
+      size: 3434363
+  embed_RAFENGAE_EJ_Weighted@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Weighted --dataset fb-forum  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-forum.pkl
+      md5: d6e7e1533a9747fe63a6a8ad59f9da77
+      size: 39492303
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Weighted.yaml
+      md5: c2de60a785e0f599fb7423078ef7cca7
+      size: 555
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/fb-forum.pkl
+      md5: 2841fafadf8146d19d75308a45fcd602
+      size: 44501336
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/fb-forum_metadata.pkl
+      md5: 2362c1ea076c22b2d5e1564806714ecf
+      size: 4292780
+  embed_RAFENGAE_EJ_Weighted@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Weighted --dataset fb-messages  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-messages.pkl
+      md5: 7986422ce60fa27804035ef28e1ee808
+      size: 62293226
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Weighted.yaml
+      md5: c2de60a785e0f599fb7423078ef7cca7
+      size: 555
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/fb-messages.pkl
+      md5: b2d6fed249175a1212286de417b03201
+      size: 66285127
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/fb-messages_metadata.pkl
+      md5: 95fc55ccbc92675e98799010d806d0b2
+      size: 5151197
+  embed_RAFENGAE_EJ_Weighted@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Weighted --dataset ppi  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ppi.pkl
+      md5: af43903a40f7c2d916beb85557e45a6c
+      size: 271874867
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Weighted.yaml
+      md5: c2de60a785e0f599fb7423078ef7cca7
+      size: 555
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/ppi.pkl
+      md5: 2af9a1dd06d76306d84aaab41145bf5f
+      size: 475580047
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/ppi_metadata.pkl
+      md5: b7cd8a5f92f6e0d5a1f3eca0c509bd0f
+      size: 3434363
+  embed_RAFENGAE_EJ_Weighted@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Weighted --dataset ogbl-collab  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ogbl-collab.pkl
+      md5: 2d6f7eba6f3732a458227b955bc59c62
+      size: 2957398354
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Weighted.yaml
+      md5: c2de60a785e0f599fb7423078ef7cca7
+      size: 555
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/ogbl-collab.pkl
+      md5: 554565f1760058044db2fb995e89a34f
+      size: 4424914262
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/ogbl-collab_metadata.pkl
+      md5: 74b1a144083b90bbf721d5c236a90211
+      size: 5151197
+  embed_RAFENGAE_TB_Alpha@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Alpha --dataset bitcoin-alpha  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-alpha.pkl
+      md5: 542c87f66da313daf3392f382817fafe
+      size: 69480257
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-alpha.pkl
+      md5: da818eca9f75bc8e8a9dd2aa98ccd83c
+      size: 36708
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Alpha.yaml
+      md5: 61a96d31b9b15b747d88aef1bc87f7f7
+      size: 561
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Alpha/bitcoin-alpha.pkl
+      md5: 8f673bb160e18e209991ed4c9eb86048
+      size: 71985195
+    - path: data/embeddings/RAFENGAE_TB_Alpha/bitcoin-alpha_metadata.pkl
+      md5: 6533ba12249ea5384f72355993a5532c
+      size: 3504372
+  embed_RAFENGAE_TB_Alpha@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Alpha --dataset bitcoin-otc  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-otc.pkl
+      md5: 38061504edc74430ddfbaafd51a89a1f
+      size: 101944928
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/prev/cached/temporal_scores/betweenness/bitcoin-otc.pkl
+      md5: f50f974b3630450d47c7aa231d1b16fb
+      size: 50367
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Alpha.yaml
+      md5: 61a96d31b9b15b747d88aef1bc87f7f7
+      size: 561
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Alpha/bitcoin-otc.pkl
+      md5: dbc39b5449618636939ef40850cd0fe6
+      size: 107690250
+    - path: data/embeddings/RAFENGAE_TB_Alpha/bitcoin-otc_metadata.pkl
+      md5: 73f214b6ff8a8a12af21ef5f0f8c233b
+      size: 3504372
+  embed_RAFENGAE_TB_Alpha@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Alpha --dataset fb-forum  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-forum.pkl
+      md5: d6e7e1533a9747fe63a6a8ad59f9da77
+      size: 39492303
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/prev/cached/temporal_scores/betweenness/fb-forum.pkl
+      md5: 9ec1bf674ffb1964e0fe91736c6b564b
+      size: 61523
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Alpha.yaml
+      md5: 61a96d31b9b15b747d88aef1bc87f7f7
+      size: 561
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Alpha/fb-forum.pkl
+      md5: 2d261b626fca93154303b44224ab17ac
+      size: 44501336
+    - path: data/embeddings/RAFENGAE_TB_Alpha/fb-forum_metadata.pkl
+      md5: c7adf4527bc4b109a9b7e30e1b525a5a
+      size: 4380289
+  embed_RAFENGAE_TB_Alpha@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Alpha --dataset fb-messages  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-messages.pkl
+      md5: 7986422ce60fa27804035ef28e1ee808
+      size: 62293226
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/prev/cached/temporal_scores/betweenness/fb-messages.pkl
+      md5: db414b8bcab8823206fea01f5598d6be
+      size: 72745
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Alpha.yaml
+      md5: 61a96d31b9b15b747d88aef1bc87f7f7
+      size: 561
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Alpha/fb-messages.pkl
+      md5: 9ba8c8848a243f18bf77abd4910de308
+      size: 66285127
+    - path: data/embeddings/RAFENGAE_TB_Alpha/fb-messages_metadata.pkl
+      md5: cdfc75037ca5bb0d0a62ed3b1240001c
+      size: 5256215
+  embed_RAFENGAE_TB_Alpha@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Alpha --dataset ppi  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ppi.pkl
+      md5: af43903a40f7c2d916beb85557e45a6c
+      size: 271874867
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/prev/cached/temporal_scores/betweenness/ppi.pkl
+      md5: 85985cc7321a3e2a07756cb1f0fa5efc
+      size: 508149
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Alpha.yaml
+      md5: 61a96d31b9b15b747d88aef1bc87f7f7
+      size: 561
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Alpha/ppi.pkl
+      md5: 68e78d54052f31f7186de57fdf423197
+      size: 475580047
+    - path: data/embeddings/RAFENGAE_TB_Alpha/ppi_metadata.pkl
+      md5: 2d3e2a4be1fdbd683c9cb952c2dc995d
+      size: 3504372
+  embed_RAFENGAE_TB_Alpha@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_TB_Alpha --dataset ogbl-collab  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ogbl-collab.pkl
+      md5: 2d6f7eba6f3732a458227b955bc59c62
+      size: 2957398354
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/prev/cached/temporal_scores/betweenness/ogbl-collab.pkl
+      md5: f1a94578e8ce0d320d76527a37222ec6
+      size: 2377703
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_TB_Alpha.yaml
+      md5: 61a96d31b9b15b747d88aef1bc87f7f7
+      size: 561
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_TB_Alpha/ogbl-collab.pkl
+      md5: c991d35196b9b84bfaecce3b90d402d4
+      size: 4424914262
+    - path: data/embeddings/RAFENGAE_TB_Alpha/ogbl-collab_metadata.pkl
+      md5: 2faca86358bc1d826f80fd37e0b49b1e
+      size: 5256215
+  embed_RAFENGAE_EJ_Alpha@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Alpha --dataset bitcoin-alpha  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-alpha.pkl
+      md5: 542c87f66da313daf3392f382817fafe
+      size: 69480257
+    - path: data/graphs/bitcoin-alpha.pkl
+      md5: 5fdb834a52ea89894b7395692d45c93c
+      size: 1063621
+    - path: data/tg_graphs/bitcoin-alpha.pkl
+      md5: de38f8644821a4cc37945e4e14b9b8ff
+      size: 699154
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Alpha.yaml
+      md5: 99c272965bf39bcfd29dea4fed6c99f4
+      size: 497
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/bitcoin-alpha.pkl
+      md5: 982bcae7414877ffcbf486dbe78383e7
+      size: 71985195
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/bitcoin-alpha_metadata.pkl
+      md5: 4fab29bc0188a675a6da8d0bf6a74ea2
+      size: 3504372
+  embed_RAFENGAE_EJ_Alpha@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Alpha --dataset bitcoin-otc  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/bitcoin-otc.pkl
+      md5: 38061504edc74430ddfbaafd51a89a1f
+      size: 101944928
+    - path: data/graphs/bitcoin-otc.pkl
+      md5: 09d364cd2bf3c12e6584eb76f526ca00
+      size: 1600306
+    - path: data/tg_graphs/bitcoin-otc.pkl
+      md5: f43e9883a1d4f85d260e02bfef5d1088
+      size: 1029826
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Alpha.yaml
+      md5: 99c272965bf39bcfd29dea4fed6c99f4
+      size: 497
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/bitcoin-otc.pkl
+      md5: 0ee8ff4efd0f29027e1d876dd5cc4689
+      size: 107690250
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/bitcoin-otc_metadata.pkl
+      md5: 0d397b97f98a0b87975669400b814ef7
+      size: 3504372
+  embed_RAFENGAE_EJ_Alpha@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Alpha --dataset fb-forum  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-forum.pkl
+      md5: d6e7e1533a9747fe63a6a8ad59f9da77
+      size: 39492303
+    - path: data/graphs/fb-forum.pkl
+      md5: cd783cba5abf6c1a47790fda2217661d
+      size: 840944
+    - path: data/tg_graphs/fb-forum.pkl
+      md5: b7dd1d9008184eacb5c738807f48da34
+      size: 641763
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Alpha.yaml
+      md5: 99c272965bf39bcfd29dea4fed6c99f4
+      size: 497
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/fb-forum.pkl
+      md5: 0e9b3976ac0e4534ac6ce07964c2bc04
+      size: 44501336
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/fb-forum_metadata.pkl
+      md5: 39250875e611ab8cff848a190cc1a823
+      size: 4380289
+  embed_RAFENGAE_EJ_Alpha@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Alpha --dataset fb-messages  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/fb-messages.pkl
+      md5: 7986422ce60fa27804035ef28e1ee808
+      size: 62293226
+    - path: data/graphs/fb-messages.pkl
+      md5: 5b04f0bb049b5ccfb58cdbdded30679b
+      size: 1463227
+    - path: data/tg_graphs/fb-messages.pkl
+      md5: da81efc5356b69d64494f11db416a30b
+      size: 911266
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Alpha.yaml
+      md5: 99c272965bf39bcfd29dea4fed6c99f4
+      size: 497
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/fb-messages.pkl
+      md5: 7faadd2c5ebca20f6ccf00619ee95b43
+      size: 66285127
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/fb-messages_metadata.pkl
+      md5: 8edff7c431968e3c04ec4dafd954d946
+      size: 5256215
+  embed_RAFENGAE_EJ_Alpha@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Alpha --dataset ppi  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ppi.pkl
+      md5: af43903a40f7c2d916beb85557e45a6c
+      size: 271874867
+    - path: data/graphs/ppi.pkl
+      md5: 8107d9ad965c487e516a6955df0a916e
+      size: 5758270
+    - path: data/tg_graphs/ppi.pkl
+      md5: 7b49ed08f18a5bdba372215e6ecbd767
+      size: 7567585
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Alpha.yaml
+      md5: 99c272965bf39bcfd29dea4fed6c99f4
+      size: 497
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/ppi.pkl
+      md5: 0b0f1d7552eb0c453920a0193787f885
+      size: 475580047
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/ppi_metadata.pkl
+      md5: 2d2b216e6356b43d7e43742737127f21
+      size: 3504372
+  embed_RAFENGAE_EJ_Alpha@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model
+      RAFENGAE_EJ_Alpha --dataset ogbl-collab  --runs 25 --loss-scaling --prev-snapshot-alignment
+      --cfg experiments/configs/models/GAE.yaml
+    deps:
+    - path: data/embeddings/GAE/ogbl-collab.pkl
+      md5: 2d6f7eba6f3732a458227b955bc59c62
+      size: 2957398354
+    - path: data/graphs/ogbl-collab.pkl
+      md5: 70b1c02bfbe6bc6d726e9dae73325942
+      size: 46713881
+    - path: data/tg_graphs/ogbl-collab.pkl
+      md5: d2b5bd0361391f1031817ca833f19c3d
+      size: 64741215
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/RAFENGAE_EJ_Alpha.yaml
+      md5: 99c272965bf39bcfd29dea4fed6c99f4
+      size: 497
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_aligned_graphs.py
+      md5: cc51313ade44a0ba63d9f38e96d07bb0
+      size: 3733
+    outs:
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/ogbl-collab.pkl
+      md5: 4f65d3536d6f8833e3aea3a6d1dff037
+      size: 4424914262
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/ogbl-collab_metadata.pkl
+      md5: 15f77b4cf7f011a3acbb5850186dd6ef
+      size: 5256215
+  embed_GAE_full@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      bitcoin-alpha --runs 25 --cfg experiments/configs/models/GAE.yaml --full-graphs
+    deps:
+    - path: data/full_graphs/bitcoin-alpha.pkl
+      md5: 32ab621e060a9f7574e2548166439348
+      size: 4176678
+    - path: data/full_tg_graphs/bitcoin-alpha.pkl
+      md5: fbf5fdadebc0ea55e71e5fec6a622f4f
+      size: 2537421
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/GAE/bitcoin-alpha.pkl
+      md5: 4dec54d65b6d3575f2d5e484fd27c0ac
+      size: 156095478
+    - path: data/embeddings_full/GAE/bitcoin-alpha_metadata.pkl
+      md5: d0d6d7d3194f21d3f198b78479febd67
+      size: 2311071
+  embed_GAE_full@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      bitcoin-otc --runs 25 --cfg experiments/configs/models/GAE.yaml --full-graphs
+    deps:
+    - path: data/full_graphs/bitcoin-otc.pkl
+      md5: 7d7845895050d305b22e975f543d94d5
+      size: 5824008
+    - path: data/full_tg_graphs/bitcoin-otc.pkl
+      md5: eae7e82208862e0145413badfc29b739
+      size: 3495234
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/GAE/bitcoin-otc.pkl
+      md5: cadf373e035cb5c62730ebcfb8fdb581
+      size: 216741135
+    - path: data/embeddings_full/GAE/bitcoin-otc_metadata.pkl
+      md5: cd1f0bbd34257a9e24cde01aec72b4b5
+      size: 2311071
+  embed_GAE_full@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      fb-forum --runs 25 --cfg experiments/configs/models/GAE.yaml --full-graphs
+    deps:
+    - path: data/full_graphs/fb-forum.pkl
+      md5: 6170860a30498101861af490ee3a938d
+      size: 4568337
+    - path: data/full_tg_graphs/fb-forum.pkl
+      md5: 1acb20138af6052ec03cf22e7727e23d
+      size: 1939034
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/GAE/fb-forum.pkl
+      md5: bd0eb088a1bbdf2e8cd48a9e632bfc17
+      size: 57839623
+    - path: data/embeddings_full/GAE/fb-forum_metadata.pkl
+      md5: 844ac5dc9ecd478cdca8adae36f51ac0
+      size: 2888677
+  embed_GAE_full@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      fb-messages --runs 25 --cfg experiments/configs/models/GAE.yaml --full-graphs
+    deps:
+    - path: data/full_graphs/fb-messages.pkl
+      md5: 4b79823fb86b809cd8d68fc728f066b7
+      size: 8869382
+    - path: data/full_tg_graphs/fb-messages.pkl
+      md5: 7f23b2ba9fff689a42d72ffe317b103e
+      size: 4266467
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/GAE/fb-messages.pkl
+      md5: dfb0284dc85fdc5bbf3fff0f473b8f57
+      size: 131547521
+    - path: data/embeddings_full/GAE/fb-messages_metadata.pkl
+      md5: f6ec7b8de8c52e20306f954d01039c2b
+      size: 3466274
+  embed_GAE_full@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      ppi --runs 25 --cfg experiments/configs/models/GAE.yaml --full-graphs
+    deps:
+    - path: data/full_graphs/ppi.pkl
+      md5: d059d13bd362f4fb01e815d1587521fb
+      size: 13405450
+    - path: data/full_tg_graphs/ppi.pkl
+      md5: 436bbdc0473bb1b8b109786124c16fc2
+      size: 12143285
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/GAE/ppi.pkl
+      md5: 4cc854fdd0b883183921d0bf3bd1135f
+      size: 312156316
+    - path: data/embeddings_full/GAE/ppi_metadata.pkl
+      md5: dfdf690d5cab6085519c131ef2287f18
+      size: 2311071
+  embed_GAE_full@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset
+      ogbl-collab --runs 25 --cfg experiments/configs/models/GAE.yaml --full-graphs
+    deps:
+    - path: data/full_graphs/ogbl-collab.pkl
+      md5: a5f59048b6666dc3ca3d77e9ae516593
+      size: 113565203
+    - path: data/full_tg_graphs/ogbl-collab.pkl
+      md5: 2b67de566f9140492225e564df1ccd47
+      size: 139316613
+    - path: experiments/configs/models/GAE.yaml
+      md5: 4b100c14bffae225e5a28871d7b42193
+      size: 276
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/GAE/ogbl-collab.pkl
+      md5: e6a2184f18c4b59d3960fd07522feafa
+      size: 5480495720
+    - path: data/embeddings_full/GAE/ogbl-collab_metadata.pkl
+      md5: 2768bafde7e39de48a12260aa253d53a
+      size: 3466274
+  embed_Node2Vec_full@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset bitcoin-alpha --runs 25 --full-graphs
+    deps:
+    - path: data/full_graphs/bitcoin-alpha.pkl
+      md5: 32ab621e060a9f7574e2548166439348
+      size: 4176678
+    - path: data/full_tg_graphs/bitcoin-alpha.pkl
+      md5: fbf5fdadebc0ea55e71e5fec6a622f4f
+      size: 2537421
+    - path: data/random_walks/bitcoin-alpha/
+      md5: 8e1bc2dd870b496566dcfbcaa229fe40.dir
+      size: 28462486250
+      nfiles: 1250
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/Node2Vec/bitcoin-alpha.pkl
+      md5: 7e541531e242f29a4ff45a11858a1e5c
+      size: 46598175
+    - path: data/embeddings_full/Node2Vec/bitcoin-alpha_metadata.pkl
+      md5: 302d4b2e43c6493399c5f940f604bb62
+      size: 63842725
+  embed_Node2Vec_full@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset bitcoin-otc --runs 25 --full-graphs
+    deps:
+    - path: data/full_graphs/bitcoin-otc.pkl
+      md5: 7d7845895050d305b22e975f543d94d5
+      size: 5824008
+    - path: data/full_tg_graphs/bitcoin-otc.pkl
+      md5: eae7e82208862e0145413badfc29b739
+      size: 3495234
+    - path: data/random_walks/bitcoin-otc/
+      md5: 22f504cbcf665cff780dc478d606b8be.dir
+      size: 126126417750
+      nfiles: 3750
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/Node2Vec/bitcoin-otc.pkl
+      md5: b414fd40e63e3149069689eb2048d949
+      size: 216741135
+    - path: data/embeddings_full/Node2Vec/bitcoin-otc_metadata.pkl
+      md5: e5a0617171890e50418555e7576f8d31
+      size: 33730341
+  embed_Node2Vec_full@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset fb-forum --runs 25 --full-graphs
+    deps:
+    - path: data/full_graphs/fb-forum.pkl
+      md5: 6170860a30498101861af490ee3a938d
+      size: 4568337
+    - path: data/full_tg_graphs/fb-forum.pkl
+      md5: 1acb20138af6052ec03cf22e7727e23d
+      size: 1939034
+    - path: data/random_walks/fb-forum/
+      md5: 7cd751980831d299f6ac8f854f7f5975.dir
+      size: 90425818500
+      nfiles: 4500
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/Node2Vec/fb-forum.pkl
+      md5: de9e32ebcd50d5ea07171f66da2a8ded
+      size: 57839623
+    - path: data/embeddings_full/Node2Vec/fb-forum_metadata.pkl
+      md5: 820d0618f8739e7170a1f56024958640
+      size: 9555545
+  embed_Node2Vec_full@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset fb-messages --runs 25 --full-graphs
+    deps:
+    - path: data/full_graphs/fb-messages.pkl
+      md5: 4b79823fb86b809cd8d68fc728f066b7
+      size: 8869382
+    - path: data/full_tg_graphs/fb-messages.pkl
+      md5: 7f23b2ba9fff689a42d72ffe317b103e
+      size: 4266467
+    - path: data/random_walks/fb-messages/
+      md5: 3f306c216fff69d94aab4b78a1af3ba8.dir
+      size: 203978841000
+      nfiles: 5250
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/Node2Vec/fb-messages.pkl
+      md5: 63347a3eff2320012fb348e1e93564f3
+      size: 131547521
+    - path: data/embeddings_full/Node2Vec/fb-messages_metadata.pkl
+      md5: dd93202308051d421741cfedc72cd95d
+      size: 20991895
+  embed_Node2Vec_full@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset ppi --runs 25 --full-graphs
+    deps:
+    - path: data/full_graphs/ppi.pkl
+      md5: d059d13bd362f4fb01e815d1587521fb
+      size: 13405450
+    - path: data/full_tg_graphs/ppi.pkl
+      md5: 436bbdc0473bb1b8b109786124c16fc2
+      size: 12143285
+    - path: data/random_walks/ppi/
+      md5: 37ef4dbb2cb358d822c989def4cf388a.dir
+      size: 471379655500
+      nfiles: 2500
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/Node2Vec/ppi.pkl
+      md5: 717f9c65b8a2da86ac52da43cf3e3ec9
+      size: 312156316
+    - path: data/embeddings_full/Node2Vec/ppi_metadata.pkl
+      md5: d57fe33a3678750a5fada6d0b168ff7a
+      size: 4299803
+  embed_Node2Vec_full@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec
+      --dataset ogbl-collab --runs 25 --full-graphs
+    deps:
+    - path: data/full_graphs/ogbl-collab.pkl
+      md5: a5f59048b6666dc3ca3d77e9ae516593
+      size: 113565203
+    - path: data/full_tg_graphs/ogbl-collab.pkl
+      md5: 2b67de566f9140492225e564df1ccd47
+      size: 139316613
+    - path: data/random_walks/ogbl-collab/
+      md5: c103ee2498a2f2f190b85bbef2eae186.dir
+      size: 658432796775
+      nfiles: 525
+    - path: experiments/configs/models/Node2Vec.yaml
+      md5: 06a48ac72ead121d2808373d78239452
+      size: 1420
+    - path: experiments/configs/models/common.yaml
+      md5: 5001f90d86b315c1d232057c8ba0b83c
+      size: 209
+    - path: experiments/scripts/embed_graphs.py
+      md5: ba0bdf47608f44abe358784835da7a4c
+      size: 3211
+    outs:
+    - path: data/embeddings_full/Node2Vec/ogbl-collab.pkl
+      md5: 92a7cc91913d3097edd41d39f554ee84
+      size: 5480495720
+    - path: data/embeddings_full/Node2Vec/ogbl-collab_metadata.pkl
+      md5: ccc4e511919b2588fead432f3edb39ef
+      size: 10532758
+  convert_full_nx_graphs_to_tg_data@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset bitcoin-alpha --incremental
+    deps:
+    - path: data/full_graphs/bitcoin-alpha.pkl
+      md5: 32ab621e060a9f7574e2548166439348
+      size: 4176678
+    - path: experiments/scripts/convert_nx_graphs_to_tg_data.py
+      md5: 37cdf6ac152c98440dee8b34370ba3df
+      size: 1409
+    outs:
+    - path: data/full_tg_graphs/bitcoin-alpha.pkl
+      md5: fbf5fdadebc0ea55e71e5fec6a622f4f
+      size: 2537421
+  convert_full_nx_graphs_to_tg_data@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset bitcoin-otc --incremental
+    deps:
+    - path: data/full_graphs/bitcoin-otc.pkl
+      md5: 7d7845895050d305b22e975f543d94d5
+      size: 5824008
+    - path: experiments/scripts/convert_nx_graphs_to_tg_data.py
+      md5: 37cdf6ac152c98440dee8b34370ba3df
+      size: 1409
+    outs:
+    - path: data/full_tg_graphs/bitcoin-otc.pkl
+      md5: eae7e82208862e0145413badfc29b739
+      size: 3495234
+  convert_full_nx_graphs_to_tg_data@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset fb-forum --incremental
+    deps:
+    - path: data/full_graphs/fb-forum.pkl
+      md5: 6170860a30498101861af490ee3a938d
+      size: 4568337
+    - path: experiments/scripts/convert_nx_graphs_to_tg_data.py
+      md5: 37cdf6ac152c98440dee8b34370ba3df
+      size: 1409
+    outs:
+    - path: data/full_tg_graphs/fb-forum.pkl
+      md5: 1acb20138af6052ec03cf22e7727e23d
+      size: 1939034
+  convert_full_nx_graphs_to_tg_data@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset fb-messages --incremental
+    deps:
+    - path: data/full_graphs/fb-messages.pkl
+      md5: 4b79823fb86b809cd8d68fc728f066b7
+      size: 8869382
+    - path: experiments/scripts/convert_nx_graphs_to_tg_data.py
+      md5: 37cdf6ac152c98440dee8b34370ba3df
+      size: 1409
+    outs:
+    - path: data/full_tg_graphs/fb-messages.pkl
+      md5: 7f23b2ba9fff689a42d72ffe317b103e
+      size: 4266467
+  convert_full_nx_graphs_to_tg_data@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset ppi --incremental
+    deps:
+    - path: data/full_graphs/ppi.pkl
+      md5: d059d13bd362f4fb01e815d1587521fb
+      size: 13405450
+    - path: experiments/scripts/convert_nx_graphs_to_tg_data.py
+      md5: 37cdf6ac152c98440dee8b34370ba3df
+      size: 1409
+    outs:
+    - path: data/full_tg_graphs/ppi.pkl
+      md5: 436bbdc0473bb1b8b109786124c16fc2
+      size: 12143285
+  convert_full_nx_graphs_to_tg_data@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py
+      --dataset ogbl-collab --incremental
+    deps:
+    - path: data/full_graphs/ogbl-collab.pkl
+      md5: a5f59048b6666dc3ca3d77e9ae516593
+      size: 113565203
+    - path: experiments/scripts/convert_nx_graphs_to_tg_data.py
+      md5: 37cdf6ac152c98440dee8b34370ba3df
+      size: 1409
+    outs:
+    - path: data/full_tg_graphs/ogbl-collab.pkl
+      md5: 2b67de566f9140492225e564df1ccd47
+      size: 139316613
+  merge_snapshots:
+    cmd: PYTHONPATH=. python3 experiments/scripts/merge_graphs.py
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/merge_graphs.py
+      md5: acad67a3124b4a88281f0c7f3586e20c
+      size: 1013
+    outs:
+    - path: data/full_graphs/
+      md5: 01bebd8b81cf456516a04bcf1e07f6a5.dir
+      size: 150409058
+      nfiles: 6
+  alpha_grid_search_gae@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset bitcoin-alpha
+      --runs 5 --model-config experiments/configs/models/GAE.yaml --config experiments/configs/alpha_grid_search_gae.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search_gae.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search_gae/alpha/bitcoin-alpha
+      md5: 8538135f52d126ed69cdccdbfc8cafbf.dir
+      size: 13845376
+      nfiles: 19
+  alpha_grid_search_gae@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset bitcoin-otc
+      --runs 5 --model-config experiments/configs/models/GAE.yaml --config experiments/configs/alpha_grid_search_gae.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search_gae.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search_gae/alpha/bitcoin-otc
+      md5: 608aafa051522aaaba8d7070bbeb8b5b.dir
+      size: 13845376
+      nfiles: 19
+  alpha_grid_search_gae@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset fb-forum
+      --runs 5 --model-config experiments/configs/models/GAE.yaml --config experiments/configs/alpha_grid_search_gae.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search_gae.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search_gae/alpha/fb-forum
+      md5: f665b9124e914ecc39912c8a0197f695.dir
+      size: 17303528
+      nfiles: 19
+  alpha_grid_search_gae@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset fb-messages
+      --runs 5 --model-config experiments/configs/models/GAE.yaml --config experiments/configs/alpha_grid_search_gae.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search_gae.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search_gae/alpha/fb-messages
+      md5: fb97dddfc2ab28b0fd87868afa3f126c.dir
+      size: 20761851
+      nfiles: 19
+  alpha_grid_search_gae@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset ppi
+      --runs 5 --model-config experiments/configs/models/GAE.yaml --config experiments/configs/alpha_grid_search_gae.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search_gae.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search_gae/alpha/ppi
+      md5: 6bab7be0a755447b1e3508fa0594c698.dir
+      size: 13845376
+      nfiles: 19
+  alpha_grid_search_gae@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset ogbl-collab
+      --runs 5 --model-config experiments/configs/models/GAE.yaml --config experiments/configs/alpha_grid_search_gae.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search_gae.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search_gae/alpha/ogbl-collab
+      md5: a3ccd4faf07e24cb20b434c27b97ec27.dir
+      size: 20761851
+      nfiles: 19
+  alpha_grid_search@bitcoin-alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset bitcoin-alpha
+      --runs 5 --precomputed-rw
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search/alpha/bitcoin-alpha
+      md5: bc8e52759c2e64dbe7e73e1bf52efeb2.dir
+      size: 110008955
+      nfiles: 19
+  alpha_grid_search@bitcoin-otc:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset bitcoin-otc
+      --runs 5 --precomputed-rw
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search/alpha/bitcoin-otc
+      md5: 029d43c656450a8c0fc37a55ee39b4c9.dir
+      size: 73183725
+      nfiles: 19
+  alpha_grid_search@fb-forum:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset fb-forum
+      --runs 5 --precomputed-rw
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search/alpha/fb-forum
+      md5: 1e37f28de481c714a2ce9c252849bfa3.dir
+      size: 33429113
+      nfiles: 19
+  alpha_grid_search@fb-messages:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset fb-messages
+      --runs 5 --precomputed-rw
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search/alpha/fb-messages
+      md5: d43d689880e11c985a57546fa1196cd6.dir
+      size: 52934209
+      nfiles: 19
+  alpha_grid_search@ppi:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset ppi
+      --runs 5 --precomputed-rw
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search/alpha/ppi
+      md5: f1a4e911c7eac9c0392611cccc7856bb.dir
+      size: 34491574
+      nfiles: 19
+  alpha_grid_search@ogbl-collab:
+    cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset ogbl-collab
+      --runs 5 --precomputed-rw
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: experiments/scripts/alpha_grid_search.py
+      md5: 53a048ebf01f4f7e1beed7995513e2e0
+      size: 7170
+    params:
+      experiments/configs/alpha_grid_search.yaml:
+        alpha_step: 0.05
+    outs:
+    - path: data/grid_search/alpha/ogbl-collab
+      md5: 850cb02f0c2de215745b12c18b583c41.dir
+      size: 45538288
+      nfiles: 19
+  check_methods_knowledge_transfer:
+    cmd: PYTHONPATH=. python3 experiments/scripts/check_methods_knowledge_transfer.py
+    deps:
+    - path: data/embeddings/
+      md5: f14c3045e80566a2f961c8e7fb6a6fa7.dir
+      size: 71396177666
+      nfiles: 171
+    outs:
+    - path: data/studies/knowledge_transfer.pkl
+      md5: 8a11dd19c800b2b881ebe40ef5e9540b
+      size: 1214835
+  evaluate_lp_full@Node2Vec:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model Node2Vec  --config
+      experiments/configs/lp/evaluate_lp_full.yaml
+    deps:
+    - path: data/embeddings_full/Node2Vec/
+      md5: c065a325fa55e0fc935d5ecc916a1260.dir
+      size: 6388331797
+      nfiles: 13
+    - path: data/full_graphs/
+      md5: 01bebd8b81cf456516a04bcf1e07f6a5.dir
+      size: 150409058
+      nfiles: 6
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp_full.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/full_graphs/
+          embeddings: data/embeddings_full/
+          output: data/evaluation_full/lp/
+    outs:
+    - path: data/evaluation_full/lp/Node2Vec/
+      md5: 42efcd21c2788085e09fb6d4cc6c8427.dir
+      size: 2516400
+      nfiles: 12
+  evaluate_lp_full@GAE:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model GAE  --config
+      experiments/configs/lp/evaluate_lp_full.yaml
+    deps:
+    - path: data/embeddings_full/GAE/
+      md5: 46b691994c0d86143f270d6af031996a.dir
+      size: 6371630231
+      nfiles: 12
+    - path: data/full_graphs/
+      md5: 01bebd8b81cf456516a04bcf1e07f6a5.dir
+      size: 150409058
+      nfiles: 6
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp_full.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/full_graphs/
+          embeddings: data/embeddings_full/
+          output: data/evaluation_full/lp/
+    outs:
+    - path: data/evaluation_full/lp/GAE/
+      md5: 840d002a5cf45762b3662d7739978a57.dir
+      size: 6271735
+      nfiles: 12
+  evaluate_lp_posthoc@PosthocALL:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model PosthocALL  --config
+      experiments/configs/lp/evaluate_lp_posthoc.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: data/posthoc/PosthocALL/
+      md5: 168046c13559c8186493ccc095de79a3.dir
+      size: 3471814647
+      nfiles: 12
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp_posthoc.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/posthoc/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/PosthocALL
+      md5: a7857613549a9c7bd529a48acc6f148b.dir
+      size: 6274718
+      nfiles: 12
+  evaluate_lp_posthoc@PosthocEJ:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model PosthocEJ  --config
+      experiments/configs/lp/evaluate_lp_posthoc.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: data/posthoc/PosthocEJ/
+      md5: 68748622e4eb949a4b9cdeca0e191b3c.dir
+      size: 3471814647
+      nfiles: 12
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp_posthoc.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/posthoc/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/PosthocEJ
+      md5: 0d80444621f575f86c66e0667b486101.dir
+      size: 6273443
+      nfiles: 12
+  evaluate_lp_posthoc@PosthocTB:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model PosthocTB  --config
+      experiments/configs/lp/evaluate_lp_posthoc.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: data/posthoc/PosthocTB/
+      md5: 4a79d9c3131ad114f484f4f8a2688f16.dir
+      size: 3471814647
+      nfiles: 12
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp_posthoc.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/posthoc/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/PosthocTB
+      md5: e4af19f2cf871f3a1e477a4d01c36dae.dir
+      size: 6273674
+      nfiles: 12
+  evaluate_lp_posthoc@PosthocALL_GAE:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model PosthocALL_GAE  --config
+      experiments/configs/lp/evaluate_lp_posthoc.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: data/posthoc/PosthocALL_GAE/
+      md5: c06b1d2e31bec36dde6cb3d02261ce07.dir
+      size: 3520563948
+      nfiles: 12
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp_posthoc.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/posthoc/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/PosthocALL_GAE
+      md5: c95f7022b8205a57dde49e20f93ed282.dir
+      size: 6273080
+      nfiles: 12
+  evaluate_lp_posthoc@PosthocEJ_GAE:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model PosthocEJ_GAE  --config
+      experiments/configs/lp/evaluate_lp_posthoc.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: data/posthoc/PosthocEJ_GAE/
+      md5: a08b0f1a6b0a90940e51e3d5f46161a8.dir
+      size: 3520563948
+      nfiles: 12
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp_posthoc.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/posthoc/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/PosthocEJ_GAE
+      md5: db02ed004b38d084b78b873cb97238b2.dir
+      size: 6274834
+      nfiles: 12
+  evaluate_lp_posthoc@PosthocTB_GAE:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model PosthocTB_GAE  --config
+      experiments/configs/lp/evaluate_lp_posthoc.yaml
+    deps:
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: data/posthoc/PosthocTB_GAE/
+      md5: 4b6cf844d7c0f040b8d511d2d476fa4a.dir
+      size: 3520563948
+      nfiles: 12
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp_posthoc.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/posthoc/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/PosthocTB_GAE
+      md5: dc4eab19ead0012b168bd431ea2a74c6.dir
+      size: 6275462
+      nfiles: 12
+  evaluate_lp@RAFENNode2Vec_ALL:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENNode2Vec_ALL  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENNode2Vec_ALL/
+      md5: 48fdbf6794d50bb27c9b7c37e81791fc.dir
+      size: 5231041845
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENNode2Vec_ALL/
+      md5: 028d5c8c8426605992843bdb6e047024.dir
+      size: 6277550
+      nfiles: 12
+  evaluate_lp@RAFENNode2Vec_ALL_Alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENNode2Vec_ALL_Alpha  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENNode2Vec_ALL_Alpha/
+      md5: fbead7b73fce1f62ce72b359c434b17f.dir
+      size: 5231041941
+      nfiles: 13
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENNode2Vec_ALL_Alpha/
+      md5: b0263f34934f769ff480b0bf165c9421.dir
+      size: 6274405
+      nfiles: 12
+  evaluate_lp@RAFENNode2Vec_EJ_Alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENNode2Vec_EJ_Alpha  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Alpha/
+      md5: cd7db931b02ff5dcb0d3ddaa3120896c.dir
+      size: 5231041941
+      nfiles: 13
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENNode2Vec_EJ_Alpha/
+      md5: f3de28e214d565e494c9fbbec65da868.dir
+      size: 6276030
+      nfiles: 12
+  evaluate_lp@RAFENNode2Vec_EJ_Weighted:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENNode2Vec_EJ_Weighted  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENNode2Vec_EJ_Weighted/
+      md5: 90119d81e7257e3e8f10427c8ace12a1.dir
+      size: 5230881045
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENNode2Vec_EJ_Weighted/
+      md5: fc36d7ef123eb61d0be1597eed52bdf7.dir
+      size: 6278627
+      nfiles: 12
+  evaluate_lp@RAFENNode2Vec_TB_Alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENNode2Vec_TB_Alpha  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENNode2Vec_TB_Alpha/
+      md5: 7d6df0a2c5ff4ca617a53b15152a3316.dir
+      size: 5231041941
+      nfiles: 13
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENNode2Vec_TB_Alpha/
+      md5: 5b69641bb8d513250b31549cb00e29ba.dir
+      size: 6277685
+      nfiles: 12
+  evaluate_lp@RAFENNode2Vec_TB_Weighted:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENNode2Vec_TB_Weighted  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENNode2Vec_TB_Weighted/
+      md5: dec9e4e597887842ea3b49395a460180.dir
+      size: 5230881045
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENNode2Vec_TB_Weighted/
+      md5: 1d5dc56bb186747546c3d44df1e48473.dir
+      size: 6278433
+      nfiles: 12
+  evaluate_lp@RAFENGAE_ALL:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENGAE_ALL  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENGAE_ALL/
+      md5: f4599977997030d37bc732b28c51d992.dir
+      size: 5216362196
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENGAE_ALL/
+      md5: d9284d0d591d0d53d4fea73ab3149a33.dir
+      size: 6275815
+      nfiles: 12
+  evaluate_lp@RAFENGAE_ALL_Alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENGAE_ALL_Alpha  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENGAE_ALL_Alpha/
+      md5: 9513fb59013b34b5ea6e01274ad58b68.dir
+      size: 5216362052
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENGAE_ALL_Alpha/
+      md5: 0b73d37f1dcc867b9b73fdc38dded1e9.dir
+      size: 6275110
+      nfiles: 12
+  evaluate_lp@RAFENGAE_EJ_Alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENGAE_EJ_Alpha  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENGAE_EJ_Alpha/
+      md5: 3782c0dd7c9d417f5ab23b15e0764649.dir
+      size: 5216362052
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENGAE_EJ_Alpha/
+      md5: b1628e9f3c91a1a94462d0dba8ce7967.dir
+      size: 6275462
+      nfiles: 12
+  evaluate_lp@RAFENGAE_EJ_Weighted:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENGAE_EJ_Weighted  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENGAE_EJ_Weighted/
+      md5: f99786d366cc9e925e3afb3bafe343df.dir
+      size: 5215854480
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENGAE_EJ_Weighted/
+      md5: 3ae00d427d4f4fc6d45bc7b536194d42.dir
+      size: 6273517
+      nfiles: 12
+  evaluate_lp@RAFENGAE_TB_Alpha:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENGAE_TB_Alpha  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENGAE_TB_Alpha/
+      md5: 4bff39d007048f74d40b1ffc2e420d5d.dir
+      size: 5216362052
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENGAE_TB_Alpha/
+      md5: 604991e6bb18bdeaa05099778a30c3c4.dir
+      size: 6274717
+      nfiles: 12
+  evaluate_lp@RAFENGAE_TB_Weighted:
+    cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model RAFENGAE_TB_Weighted  --config
+      experiments/configs/lp/evaluate_lp.yaml
+    deps:
+    - path: data/embeddings/RAFENGAE_TB_Weighted/
+      md5: 4b7a41c75ac4c39ff89c9fd77bb95e6a.dir
+      size: 5215854480
+      nfiles: 12
+    - path: data/graphs/
+      md5: a88055699eba905410874f11cc7178d4.dir
+      size: 57440342
+      nfiles: 7
+    - path: data/lp_datasets/
+      md5: cbf662642a6ca761eed00b3d9f63ee6a.dir
+      size: 22093613
+      nfiles: 6
+    - path: experiments/scripts/evaluate_lp.py
+      md5: d21597306de543d0ec62280012cea586
+      size: 6372
+    params:
+      experiments/configs/lp/evaluate_lp.yaml:
+        datasets:
+        - bitcoin-alpha
+        - bitcoin-otc
+        - fb-forum
+        - fb-messages
+        - ppi
+        - ogbl-collab
+        paths:
+          graph: data/graphs/
+          embeddings: data/embeddings/
+          output: data/evaluation/lp/
+    outs:
+    - path: data/evaluation/lp/RAFENGAE_TB_Weighted/
+      md5: 8505ee4a8a244900817b5b940870c1fe.dir
+      size: 6276449
+      nfiles: 12

@@ -1,0 +1,15 @@
+cls: rafen.activity_scoring.selectors.FILDNEPercentAligner
+method: percent
+args:
+  fb-forum:
+    percent: 1.0
+  fb-messages:
+    percent: 1.0
+  bitcoin-otc:
+    percent: 1.0
+  bitcoin-alpha:
+    percent: 1.0
+  ppi:
+    percent: 1.0
+  ogbl-collab:
+    percent: 1.0

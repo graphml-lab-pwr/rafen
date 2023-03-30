@@ -1,0 +1,30 @@
+cls: rafen.models.rafen_node2vec.RAFENNode2Vec
+
+alpha:
+  bitcoin-alpha: 0.2
+  bitcoin-otc: 0.25
+  fb-forum: 0.1
+  fb-messages: 0.15
+  ogbl-collab: 0.1
+  ppi: 0.45
+
+
+selector:
+  cls: rafen.activity_scoring.selectors.TemporalCentralityMeasureSelector
+  method: percent
+  cache: data/prev/cached/temporal_scores/betweenness/
+  args:
+    fb-forum:
+      percent: 0.8
+    fb-messages:
+      percent: 0.8
+    bitcoin-otc:
+      percent: 0.9
+    bitcoin-alpha:
+      percent: 0.8
+    ppi:
+      percent: 0.9
+    ogbl-collab:
+      percent: 0.9
+
+pretrained: data/embeddings/Node2Vec/

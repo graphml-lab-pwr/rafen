@@ -1,0 +1,17 @@
+.idea/
+__pycache__/
+*venv
+.ipynb_checkpoints/
+.tox
+3rdparty
+load-env.sh
+load-env-mlflow.sh
+!**.dvc
+notebooks
+.python-version
+docker/mlflow/mlflow
+docker/mlflow/dbdata
+.DS_Store
+data/
+jupyter_notebook_default_setup.sh
+jupyter_notebook_dev_setup.sh
