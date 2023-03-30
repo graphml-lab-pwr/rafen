@@ -1,0 +1,82 @@
+node2vec_parameters:  &n2v_cfg
+  bitcoin-alpha: &n2v_btc_alpha
+    batch_size: 2
+    context_size: 3
+    dimensions: 32
+    lr: 0.01
+    nb_walks_per_node: 50
+    p: 3.5
+    q: 4.0
+    quiet: true
+    w2v_epochs: 10
+    walk_length: 20
+    sparse: False
+
+  bitcoin-otc: &n2v_btc_otc
+    batch_size: 16
+    context_size: 3
+    dimensions: 128
+    lr: 0.01
+    nb_walks_per_node: 50
+    p: 3.5
+    q: 1.25
+    quiet: true
+    w2v_epochs: 30
+    walk_length: 20
+    sparse: False
+
+  fb-forum: &n2v_fb_forum
+    batch_size: 16
+    context_size: 3
+    dimensions: 128
+    lr: 0.01
+    nb_walks_per_node: 20
+    p: 2.25
+    q: 1.25
+    quiet: true
+    w2v_epochs: 30
+    walk_length: 80
+    sparse: False
+
+  fb-messages:  &n2v_fb_msg
+    batch_size: 16
+    context_size: 10
+    dimensions: 128
+    lr: 0.01
+    nb_walks_per_node: 10
+    p: 1.0
+    q: 2.75
+    quiet: true
+    w2v_epochs: 30
+    walk_length: 80
+    sparse: False
+
+  ppi:  &n2v_ppi
+    batch_size: 128
+    context_size: 5
+    dimensions: 128
+    lr: 0.01
+    nb_walks_per_node: 15
+    p: 1.5
+    q: 3.75
+    quiet: true
+    w2v_epochs: 20
+    walk_length: 50
+    sparse: False
+
+  ogbl-collab:  &n2v_collab
+    batch_size: 128
+    context_size: 15
+    dimensions: 128
+    lr: 0.01
+    nb_walks_per_node: 5
+    p: 3.25
+    q: 2.5
+    quiet: true
+    w2v_epochs: 3
+    walk_length: 60
+    sparse: False
+
+
+cls: rafen.models.node2vec.Node2VecEmbedding
+args: *n2v_cfg

@@ -1,0 +1,28 @@
+cls: rafen.models.rafen_gae.RAFENGAE
+
+alpha:
+  bitcoin-alpha: 0.1
+  bitcoin-otc: 0.25
+  fb-forum: 0.45
+  fb-messages: 0.45
+  ogbl-collab: 0.2
+  ppi: 0.35
+
+selector:
+  cls: rafen.activity_scoring.selectors.EdgeJaccardNodesSelector
+  method: percent
+  args:
+    fb-forum:
+      percent: 0.9
+    fb-messages:
+      percent: 0.9
+    bitcoin-otc:
+      percent: 0.8
+    bitcoin-alpha:
+      percent: 0.5
+    ppi:
+      percent: 0.8
+    ogbl-collab:
+      percent: 0.9
+
+pretrained: data/embeddings/GAE/

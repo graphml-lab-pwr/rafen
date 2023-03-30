@@ -1,0 +1,26 @@
+cls: rafen.models.rafen_node2vec.RAFENNode2VecWeighted
+
+selector:
+  cls: rafen.activity_scoring.selectors.TemporalCentralityMeasureSelector
+  method: percent
+  args:
+    fb-forum:
+      percent: 1.0
+      log_norm_scores: True
+    fb-messages:
+      percent: 1.0
+      log_norm_scores: True
+    bitcoin-otc:
+      percent: 1.0
+      log_norm_scores: True
+    bitcoin-alpha:
+      percent: 1.0
+      log_norm_scores: True
+    ppi:
+      percent: 1.0
+      log_norm_scores: True
+    ogbl-collab:
+      percent: 1.0
+      log_norm_scores: True
+
+pretrained: data/embeddings/Node2Vec/

@@ -1,0 +1,14 @@
+paths:
+  graph: 'data/full_graphs/'
+  embeddings: 'data/embeddings_full/'
+  output: 'data/evaluation_full/lp/'
+
+datasets:
+  - bitcoin-alpha
+  - bitcoin-otc
+  - fb-forum
+  - fb-messages
+  - ppi
+  - ogbl-collab
+
+model: LR

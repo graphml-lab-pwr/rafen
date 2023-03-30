@@ -1,0 +1,15 @@
+cls: rafen.activity_scoring.selectors.EdgeJaccardNodesSelector
+method: percent
+args:
+  fb-forum:
+    percent: 0.9
+  fb-messages:
+    percent: 0.9
+  bitcoin-otc:
+    percent: 0.8
+  bitcoin-alpha:
+    percent: 0.5
+  ppi:
+    percent: 0.8
+  ogbl-collab:
+    percent: 0.9

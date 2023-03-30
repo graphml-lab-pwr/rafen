@@ -1,0 +1,7 @@
+[core]
+    remote = minio
+[feature]
+    parametrization = true
+['remote "minio"']
+    url = s3://dynalign2
+    endpointurl = http://156.17.248.227:30981

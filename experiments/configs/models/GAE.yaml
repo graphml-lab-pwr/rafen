@@ -1,0 +1,14 @@
+cls: rafen.models.gae.GAEEmbedding
+
+common_args: &common_args
+    dimensions: 128
+    lr: 0.01
+    epochs: 100
+
+args:
+  bitcoin-alpha: *common_args
+  bitcoin-otc: *common_args
+  fb-forum: *common_args
+  fb-messages: *common_args
+  ppi: *common_args
+  ogbl-collab: *common_args

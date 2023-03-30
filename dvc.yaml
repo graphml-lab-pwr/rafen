@@ -1,0 +1,656 @@
+stages:
+  split_graphs:
+    foreach:
+    - bitcoin-alpha
+    - bitcoin-otc
+    - fb-forum
+    - fb-messages
+    - ppi
+    - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/split_graphs.py --dataset ${item}
+      params:
+      - experiments/configs/split_graphs.yaml:
+        - paths
+        - graphs.${item}
+      deps:
+      - data/raw/real/${item}.gpkl
+      - experiments/scripts/split_graphs.py
+      outs:
+      - data/graphs/${item}.pkl
+
+  convert_nx_graphs_to_tg_data:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py --dataset ${item}
+      deps:
+        - data/graphs/${item}.pkl
+      outs:
+        - data/tg_graphs/${item}.pkl
+
+  generate_link_prediction_datasets:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/generate_lp_datasets.py --dataset ${item} --split-proportion 0.6 0.2 0.2
+      deps:
+        - data/graphs/${item}.pkl
+      outs:
+        - data/lp_datasets/${item}.pkl
+
+  precompute_temporal_scores:
+    foreach:
+      - fb-forum
+      - fb-messages
+      - bitcoin-otc
+      - bitcoin-alpha
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name ${item}
+      params:
+        - experiments/configs/precompute_temporal_scores.yaml:
+            - timestamp_format_year
+      deps:
+        - data/graphs/${item}.pkl
+      outs:
+        - data/cached/temporal_scores/closeness/${item}.pkl
+        - data/cached/temporal_scores/betweenness/${item}.pkl
+        - data/cached/temporal_scores/k_shell_score/${item}.pkl
+        - data/cached/temporal_scores/degree_deviation/${item}.pkl
+
+  sample_random_walks:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/sample_random_walks.py --dataset ${item} --runs 25
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - experiments/configs/models/Node2Vec.yaml
+        - experiments/scripts/sample_random_walks.py
+      outs:
+        - data/random_walks/${item}/
+
+  embed_Node2Vec_precomputed:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec --dataset ${item} --precomputed-rw --runs 25
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - data/random_walks/${item}/
+        - experiments/scripts/embed_graphs.py
+        - experiments/configs/models/Node2Vec.yaml
+        - experiments/configs/models/common.yaml
+      outs:
+        - data/embeddings/Node2Vec/${item}.pkl
+        - data/embeddings/Node2Vec/${item}_metadata.pkl
+
+  precompute_temporal_scores_prev:
+    foreach:
+      - fb-forum
+      - fb-messages
+      - bitcoin-otc
+      - bitcoin-alpha
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/precompute_temporal_scores.py --dataset-name ${item} --prev-snapshot-scoring
+      params:
+        - experiments/configs/precompute_temporal_scores.yaml:
+            - timestamp_format_year
+      deps:
+        - data/graphs/${item}.pkl
+      outs:
+        - data/prev/cached/temporal_scores/closeness/${item}.pkl
+        - data/prev/cached/temporal_scores/betweenness/${item}.pkl
+        - data/prev/cached/temporal_scores/k_shell_score/${item}.pkl
+        - data/prev/cached/temporal_scores/degree_deviation/${item}.pkl
+
+
+  # RAFEN Node2Vec alpha-based variants
+  embed_RAFENNode2Vec_ALL_Alpha:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENNode2Vec_ALL_Alpha --dataset ${item} --precomputed-rw --runs 25 --loss-scaling --prev-snapshot-alignment
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/Node2Vec/${item}.pkl
+        - experiments/configs/models/Node2Vec.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENNode2Vec_ALL_Alpha.yaml
+      outs:
+        - data/embeddings/RAFENNode2Vec_ALL_Alpha/${item}.pkl
+        - data/embeddings/RAFENNode2Vec_ALL_Alpha/${item}_metadata.pkl
+  
+  embed_RAFENNode2Vec_EJ_Alpha:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENNode2Vec_EJ_Alpha --dataset ${item} --precomputed-rw --runs 25 --loss-scaling --prev-snapshot-alignment
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/Node2Vec/${item}.pkl
+        - experiments/configs/models/Node2Vec.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENNode2Vec_EJ_Alpha.yaml
+      outs:
+        - data/embeddings/RAFENNode2Vec_EJ_Alpha/${item}.pkl
+        - data/embeddings/RAFENNode2Vec_EJ_Alpha/${item}_metadata.pkl
+
+
+  embed_RAFENNode2Vec_TB_Alpha:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENNode2Vec_TB_Alpha --dataset ${item} --precomputed-rw --runs 25 --loss-scaling --prev-snapshot-alignment
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/Node2Vec/${item}.pkl
+        - experiments/configs/models/Node2Vec.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENNode2Vec_TB_Alpha.yaml
+        - data/prev/cached/temporal_scores/betweenness/${item}.pkl
+      outs:
+        - data/embeddings/RAFENNode2Vec_TB_Alpha/${item}.pkl
+        - data/embeddings/RAFENNode2Vec_TB_Alpha/${item}_metadata.pkl
+
+
+  # RAFEN Node2Vec other variants
+  embed_RAFENNode2Vec_ALL:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENNode2Vec_ALL --dataset ${item} --precomputed-rw --runs 25 --loss-scaling --prev-snapshot-alignment --ignore-alpha-scaling
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/Node2Vec/${item}.pkl
+        - experiments/configs/models/Node2Vec.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENNode2Vec_ALL.yaml
+      outs:
+        - data/embeddings/RAFENNode2Vec_ALL/${item}.pkl
+        - data/embeddings/RAFENNode2Vec_ALL/${item}_metadata.pkl
+
+
+  embed_RAFENNode2Vec_TB_Weighted:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENNode2Vec_TB_Weighted --dataset ${item} --precomputed-rw --runs 25 --loss-scaling --prev-snapshot-alignment
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - data/prev/cached/temporal_scores/betweenness/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/Node2Vec/${item}.pkl
+        - experiments/configs/models/Node2Vec.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENNode2Vec_TB_Weighted.yaml
+      outs:
+        - data/embeddings/RAFENNode2Vec_TB_Weighted/${item}.pkl
+        - data/embeddings/RAFENNode2Vec_TB_Weighted/${item}_metadata.pkl
+
+
+  embed_RAFENNode2Vec_EJ_Weighted:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENNode2Vec_EJ_Weighted --dataset ${item} --precomputed-rw --runs 25 --loss-scaling --prev-snapshot-alignment
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/Node2Vec/${item}.pkl
+        - experiments/configs/models/Node2Vec.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENNode2Vec_EJ_Weighted.yaml
+      outs:
+        - data/embeddings/RAFENNode2Vec_EJ_Weighted/${item}.pkl
+        - data/embeddings/RAFENNode2Vec_EJ_Weighted/${item}_metadata.pkl
+
+
+# GAE
+  embed_GAE:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset ${item} --runs 25 --cfg experiments/configs/models/GAE.yaml
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_graphs.py
+        - experiments/configs/models/GAE.yaml
+        - experiments/configs/models/common.yaml
+      outs:
+        - data/embeddings/GAE/${item}.pkl
+        - data/embeddings/GAE/${item}_metadata.pkl
+
+  # RAFEN GAE alpha based variants
+  embed_RAFENGAE_ALL_Alpha:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENGAE_ALL_Alpha --dataset ${item}  --runs 25 --loss-scaling --prev-snapshot-alignment --cfg experiments/configs/models/GAE.yaml
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/GAE/${item}.pkl
+        - experiments/configs/models/GAE.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENGAE_ALL_Alpha.yaml
+      outs:
+        - data/embeddings/RAFENGAE_ALL_Alpha/${item}.pkl
+        - data/embeddings/RAFENGAE_ALL_Alpha/${item}_metadata.pkl
+
+  embed_RAFENGAE_EJ_Alpha:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENGAE_EJ_Alpha --dataset ${item}  --runs 25 --loss-scaling --prev-snapshot-alignment --cfg experiments/configs/models/GAE.yaml
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/GAE/${item}.pkl
+        - experiments/configs/models/GAE.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENGAE_EJ_Alpha.yaml
+      outs:
+        - data/embeddings/RAFENGAE_EJ_Alpha/${item}.pkl
+        - data/embeddings/RAFENGAE_EJ_Alpha/${item}_metadata.pkl
+
+  embed_RAFENGAE_TB_Alpha:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENGAE_TB_Alpha --dataset ${item}  --runs 25 --loss-scaling --prev-snapshot-alignment --cfg experiments/configs/models/GAE.yaml
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/GAE/${item}.pkl
+        - experiments/configs/models/GAE.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENGAE_TB_Alpha.yaml
+        - data/prev/cached/temporal_scores/betweenness/${item}.pkl
+      outs:
+        - data/embeddings/RAFENGAE_TB_Alpha/${item}.pkl
+        - data/embeddings/RAFENGAE_TB_Alpha/${item}_metadata.pkl
+
+
+  # RAFEN GAE other variants
+  embed_RAFENGAE_ALL:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENGAE_ALL --dataset ${item}  --runs 25 --loss-scaling --prev-snapshot-alignment --cfg experiments/configs/models/GAE.yaml --ignore-alpha-scaling
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/GAE/${item}.pkl
+        - experiments/configs/models/GAE.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENGAE_ALL.yaml
+      outs:
+        - data/embeddings/RAFENGAE_ALL/${item}.pkl
+        - data/embeddings/RAFENGAE_ALL/${item}_metadata.pkl
+
+  embed_RAFENGAE_EJ_Weighted:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENGAE_EJ_Weighted --dataset ${item}  --runs 25 --loss-scaling --prev-snapshot-alignment --cfg experiments/configs/models/GAE.yaml
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/GAE/${item}.pkl
+        - experiments/configs/models/GAE.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENGAE_EJ_Weighted.yaml
+      outs:
+        - data/embeddings/RAFENGAE_EJ_Weighted/${item}.pkl
+        - data/embeddings/RAFENGAE_EJ_Weighted/${item}_metadata.pkl
+
+
+  embed_RAFENGAE_TB_Weighted:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_aligned_graphs.py --model RAFENGAE_TB_Weighted --dataset ${item}  --runs 25 --loss-scaling --prev-snapshot-alignment --cfg experiments/configs/models/GAE.yaml
+      deps:
+        - data/tg_graphs/${item}.pkl
+        - data/graphs/${item}.pkl
+        - data/prev/cached/temporal_scores/betweenness/${item}.pkl
+        - experiments/scripts/embed_aligned_graphs.py
+        - data/embeddings/GAE/${item}.pkl
+        - experiments/configs/models/GAE.yaml
+        - experiments/configs/models/common.yaml
+        - experiments/configs/models/RAFENGAE_TB_Weighted.yaml
+      outs:
+        - data/embeddings/RAFENGAE_TB_Weighted/${item}.pkl
+        - data/embeddings/RAFENGAE_TB_Weighted/${item}_metadata.pkl
+
+# POSTHOC
+  posthoc_alignment:
+    foreach:
+      - PosthocALL
+      - PosthocEJ
+      - PosthocTB
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/align_posthoc.py --model ${item} --prev-snapshot-alignment
+      deps:
+        - data/tg_graphs/
+        - data/graphs/
+        - experiments/scripts/align_posthoc.py
+        - data/embeddings/Node2Vec/
+        - experiments/configs/posthoc/${item}.yaml
+      outs:
+        - data/posthoc/${item}/
+
+  posthoc_alignment_gae:
+    foreach:
+      - PosthocALL
+      - PosthocEJ
+      - PosthocTB
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/align_posthoc.py --model ${item} --prev-snapshot-alignment --use-gae-embeddings
+      deps:
+        - data/tg_graphs/
+        - data/graphs/
+        - experiments/scripts/align_posthoc.py
+        - data/embeddings/Node2Vec/
+        - experiments/configs/posthoc/${item}.yaml
+      outs:
+        - data/posthoc/${item}_GAE/
+
+## Full Graphs Evaluation
+  merge_snapshots:
+    cmd:  PYTHONPATH=. python3 experiments/scripts/merge_graphs.py
+    deps:
+      - experiments/scripts/merge_graphs.py
+      - data/graphs/
+    outs:
+      - data/full_graphs/
+
+  convert_full_nx_graphs_to_tg_data:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/convert_nx_graphs_to_tg_data.py --dataset ${item} --incremental
+      deps:
+        - experiments/scripts/convert_nx_graphs_to_tg_data.py
+        - data/full_graphs/${item}.pkl
+      outs:
+        - data/full_tg_graphs/${item}.pkl
+
+  embed_Node2Vec_full:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model Node2Vec --dataset ${item} --runs 25 --full-graphs
+      deps:
+        - data/full_tg_graphs/${item}.pkl
+        - data/full_graphs/${item}.pkl
+        - data/random_walks/${item}/
+        - experiments/scripts/embed_graphs.py
+        - experiments/configs/models/Node2Vec.yaml
+        - experiments/configs/models/common.yaml
+      outs:
+        - data/embeddings_full/Node2Vec/${item}.pkl
+        - data/embeddings_full/Node2Vec/${item}_metadata.pkl
+
+  embed_GAE_full:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed_graphs.py --model GAE --dataset ${item} --runs 25 --cfg experiments/configs/models/GAE.yaml --full-graphs
+      deps:
+        - data/full_tg_graphs/${item}.pkl
+        - data/full_graphs/${item}.pkl
+        - experiments/scripts/embed_graphs.py
+        - experiments/configs/models/GAE.yaml
+        - experiments/configs/models/common.yaml
+      outs:
+        - data/embeddings_full/GAE/${item}.pkl
+        - data/embeddings_full/GAE/${item}_metadata.pkl
+
+
+# ALPHAS GRID SEARCH
+  alpha_grid_search:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset ${item} --runs 5 --precomputed-rw
+      params:
+        - experiments/configs/alpha_grid_search.yaml:
+            - alpha_step
+      deps:
+        - data/graphs/
+        - experiments/scripts/alpha_grid_search.py
+      outs:
+       - data/grid_search/alpha/${item}
+
+  alpha_grid_search_gae:
+    foreach:
+      - bitcoin-alpha
+      - bitcoin-otc
+      - fb-forum
+      - fb-messages
+      - ppi
+      - ogbl-collab
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/alpha_grid_search.py --dataset ${item} --runs 5 --model-config experiments/configs/models/GAE.yaml --config experiments/configs/alpha_grid_search_gae.yaml
+      params:
+        - experiments/configs/alpha_grid_search_gae.yaml:
+            - alpha_step
+      deps:
+        - data/graphs/
+        - experiments/scripts/alpha_grid_search.py
+      outs:
+        - data/grid_search_gae/alpha/${item}
+
+# STUDIES
+  check_methods_knowledge_transfer:
+    cmd:  PYTHONPATH=. python3 experiments/scripts/check_methods_knowledge_transfer.py
+    deps:
+      - data/embeddings/
+    outs:
+      - data/studies/knowledge_transfer.pkl
+
+
+#  Evaluation
+
+  evaluate_lp:
+    foreach:
+      - Node2Vec
+      - GAE
+      - RAFENNode2Vec_ALL
+      - RAFENNode2Vec_ALL_Alpha
+      - RAFENNode2Vec_EJ_Alpha
+      - RAFENNode2Vec_EJ_Weighted
+      - RAFENNode2Vec_TB_Alpha
+      - RAFENNode2Vec_TB_Weighted
+      - RAFENGAE_ALL
+      - RAFENGAE_ALL_Alpha
+      - RAFENGAE_EJ_Alpha
+      - RAFENGAE_EJ_Weighted
+      - RAFENGAE_TB_Alpha
+      - RAFENGAE_TB_Weighted
+
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model ${item}  --config experiments/configs/lp/evaluate_lp.yaml
+      params:
+        - experiments/configs/lp/evaluate_lp.yaml:
+            - datasets
+            - paths
+      deps:
+        - data/graphs/
+        - data/lp_datasets/
+        - data/embeddings/${item}/
+        - experiments/scripts/evaluate_lp.py
+      outs:
+        - data/evaluation/lp/${item}/
+
+  evaluate_lp_full:
+    foreach:
+      - Node2Vec
+      - GAE
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model ${item}  --config experiments/configs/lp/evaluate_lp_full.yaml
+      params:
+        - experiments/configs/lp/evaluate_lp_full.yaml:
+            - datasets
+            - paths
+      deps:
+        - data/full_graphs/
+        - data/embeddings_full/${item}/
+        - data/lp_datasets/
+        - experiments/scripts/evaluate_lp.py
+      outs:
+        - data/evaluation_full/lp/${item}/
+
+  evaluate_lp_posthoc:
+    foreach:
+      - PosthocALL
+      - PosthocEJ
+      - PosthocTB
+      - PosthocALL_GAE
+      - PosthocEJ_GAE
+      - PosthocTB_GAE
+    do:
+      cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_lp.py --model ${item}  --config experiments/configs/lp/evaluate_lp_posthoc.yaml
+      params:
+        - experiments/configs/lp/evaluate_lp_posthoc.yaml:
+            - datasets
+            - paths
+      deps:
+        - data/graphs/
+        - data/lp_datasets/
+        - data/posthoc/${item}/
+        - experiments/scripts/evaluate_lp.py
+      outs:
+        - data/evaluation/lp/${item}
+
+
+
+

@@ -1,0 +1,16 @@
+cls: rafen.activity_scoring.selectors.TemporalCentralityMeasureSelector
+method: percent
+cache: data/prev/cached/temporal_scores/betweenness/
+args:
+  fb-forum:
+    percent: 0.8
+  fb-messages:
+    percent: 0.8
+  bitcoin-otc:
+    percent: 0.9
+  bitcoin-alpha:
+    percent: 0.8
+  ppi:
+    percent: 0.9
+  ogbl-collab:
+    percent: 0.9
