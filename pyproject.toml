@@ -1,3 +1,12 @@
+[tool.poetry]
+name = "rafen"
+version = "0.0.1"
+description = ""
+authors = ["Kamil Tagowski <kamil.tagowski@gmail.com>"]
+packages = [
+    { include = "rafen" },
+]
+
 [tool.black]
 line-length = 80
 target-version = ['py39']
@@ -24,17 +33,10 @@ exclude = '''
 )
 '''
 
-
 [tool.isort]
 line_length = 80
-known_first_party = "dynalign"
+known_first_party = "rafen"
 profile = "black"
-
-[tool.poetry]
-name = "reg-alignment"
-version = "0.0.1"
-description = ""
-authors = [""]
 
 [tool.poetry.extras]
 tg = ["torch-scatter", "torch-cluster", "torch-sparse", "torch-spline-conv", "torch-geometric"]
